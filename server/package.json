@@ -1,0 +1,18 @@
+{
+  "name": "newsstar2_server",
+  "version": "1.0.0",
+  "description": "graphql + Apollo server interface for fetching news",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "typescript": "^5.7.3"
+  },
+  "dependencies": {
+    "mongoose": "^8.10.1"
+  }
+}
