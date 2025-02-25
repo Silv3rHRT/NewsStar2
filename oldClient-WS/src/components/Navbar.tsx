@@ -73,10 +73,10 @@ export default function Navbar() {
       
       <div className="bg-secondary text-white py-2 overflow-hidden position-relative">
         <div className="d-flex flex-nowrap" style={{ animation: "scroll 20s linear infinite" }}>
-          <span className="me-3">Los Angeles: {timezones.PST} | </span>
-          <span className="me-3">New York: {timezones.EST} | </span>
-          <span className="me-3">London: {timezones.Greenwich} | </span>
-          <span className="me-3">Kyiv: {timezones.Kyiv} | </span>
+          <span className="me-3">Los Angeles: {timezones.PST}</span>
+          <span className="me-3">New York: {timezones.EST}</span>
+          <span className="me-3">London: {timezones.Greenwich}</span>
+          <span className="me-3">Kyiv: {timezones.Kyiv}</span>
           <span>Tokyo: {timezones.Tokyo} </span>
         </div>
       </div>
