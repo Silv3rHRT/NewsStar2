@@ -63,6 +63,10 @@ export default function LoginForm() {
         <div className="d-grid">
           <Button variant="dark" onClick={handleLogin}>Login</Button>
         </div>
+
+        <div className="d-grid mt-3">
+          <Button variant="secondary" onClick={() => navigate("/")}>Back to Main Page</Button>
+        </div>
       </Form>
     </div>
   );
