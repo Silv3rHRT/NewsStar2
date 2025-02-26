@@ -131,8 +131,8 @@ export default function Navbar() {
             {headlines.length > 0 ? (
               <div className="d-flex">
                 {headlines.map((headline, index) => (
-                  <span key={index} className="me-5">
-                    {headline} &nbsp;&nbsp;|&nbsp;&nbsp;
+                  <span key={index} className="me-5"> Breaking News: &nbsp;
+                    {headline} &nbsp;&nbsp; &nbsp;&nbsp;
                   </span>
                 ))}
               </div>
