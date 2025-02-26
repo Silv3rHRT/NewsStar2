@@ -13,7 +13,7 @@ export default function Navbar() {
     Tokyo: "",
   });
 
-  const location = useLocation(); 
+  const location = useLocation();
 
   useEffect(() => {
     const updateTime = () => {
@@ -45,39 +45,44 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="navbar navbar-expand-lg navbar-dark bg-dark p-3">
-        <div className="container-fluid">
-          <Link to="/" className="navbar-brand fs-1 fw-bold">
-            NewsStar
-          </Link>
-          <div className="navbar-text text-light ms-auto">{currentDate}</div>
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarNav"
-            aria-controls="navbarNav"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <div className="collapse navbar-collapse" id="navbarNav"></div>
-          {location.pathname !== "/login" && location.pathname !== "/register" && (
-            <Link to="/login">
-              <Button variant="outline-light" className="ms-3">Login</Button>
+      {/* Navbar and Ticker Wrapper */}
+      <div className="navbar-ticker-container fixed-top" style={{ width: "100vw", left: "0", right: "0" }}>
+        {/* Navbar Section */}
+        <nav className="navbar navbar-expand-lg navbar-dark bg-dark p-3 w-100">
+          <div className="container-fluid">
+            <Link to="/" className="navbar-brand fs-1 fw-bold">
+              NewsStar
             </Link>
-          )}
-        </div>
-      </nav>
-      
-      <div className="bg-secondary text-white py-2 overflow-hidden position-relative">
-        <div className="d-flex flex-nowrap" style={{ animation: "scroll 20s linear infinite" }}>
-          <span className="me-3">Los Angeles: {timezones.PST}</span>
-          <span className="me-3">New York: {timezones.EST}</span>
-          <span className="me-3">London: {timezones.Greenwich}</span>
-          <span className="me-3">Kyiv: {timezones.Kyiv}</span>
-          <span>Tokyo: {timezones.Tokyo} </span>
+            <div className="navbar-text text-light ms-auto">{currentDate}</div>
+            {/* <button
+              className="navbar-toggler"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarNav"
+              aria-controls="navbarNav"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span className="navbar-toggler-icon"></span>
+            </button> */}
+            <div className="collapse navbar-collapse" id="navbarNav"></div>
+            {location.pathname !== "/login" && location.pathname !== "/register" && (
+              <Link to="/login">
+                <Button variant="outline-light" className="ms-3">Login</Button>
+              </Link>
+            )}
+          </div>
+        </nav>
+        
+        {/* Ticker Section - Directly Below Navbar */}
+        <div className="bg-secondary text-white py-2 overflow-hidden w-100">
+          <div className="d-flex flex-nowrap" style={{ animation: "scroll 20s linear infinite", whiteSpace: "nowrap" }}>
+            <span className="me-3">Los Angeles: {timezones.PST}</span>
+            <span className="me-3">New York: {timezones.EST}</span>
+            <span className="me-3">London: {timezones.Greenwich}</span>
+            <span className="me-3">Kyiv: {timezones.Kyiv}</span>
+            <span>Tokyo: {timezones.Tokyo} </span>
+          </div>
         </div>
       </div>
 
@@ -90,6 +95,14 @@ export default function Navbar() {
             to {
               transform: translateX(-100%);
             }
+          }
+          .navbar-ticker-container {
+            width: 100vw;
+            left: 0;
+            right: 0;
+          }
+          .navbar {
+            margin-bottom: 0;
           }
         `}
       </style>
