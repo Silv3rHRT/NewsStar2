@@ -109,7 +109,7 @@ export default function Navbar() {
         <div className="bg-secondary text-white py-2 overflow-hidden position-relative navbar-ticker-container w-100">
           <div
             className="d-flex flex-nowrap w-100"
-            style={{ animation: "scroll 20s linear infinite",
+            style={{ animation: "scroll 15s linear infinite",
               whiteSpace: "nowrap", }}
           >
             <span className="me-3">Los Angeles: {timezones.PST}</span>
@@ -120,11 +120,11 @@ export default function Navbar() {
           </div>
         </div>
 
-        <div className="bg-dark text-white py-2 overflow-hidden position-relative navbar-ticker-container w-100">
+        <div className="bg-dark text-white py-2 overflow-hidden position-relative navbar-ticker-container">
           <div
-            className="d-flex flex-nowrap w-100"
+            className="d-flex"
             style={{
-              animation: "scroll-news 20s linear infinite",
+              animation: "scroll-news 30s linear infinite",
               whiteSpace: "nowrap",
             }}
           >
