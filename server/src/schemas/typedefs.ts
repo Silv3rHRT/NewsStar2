@@ -32,11 +32,11 @@ const typeDefs = `
   }
 
   type Mutation {
-    addUser(username: String!, password: String!): User
-	  updateUser(_id: ID!, username: String!, password: String!): User
-	  deleteUser(_id: ID!): User
-	  login(username: String!, password: String!): Auth
-	  search(searchTerms: String!): [Story]!
+    adduser(username: string!, password: string!): Auth
+	updateuser(username: string!, password: string!): User
+	deleteUser(): User
+	login(username: String!, password: String!): Auth
+	search(searchTerms: String!): [Story]!
     addFavorite(article_url: String!): User
     removeFavorite(article_url: String!) User
   }

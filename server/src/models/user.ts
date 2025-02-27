@@ -5,15 +5,15 @@ import { IFavoriteStory, favoriteStorySchema } from './story.js';
 
 interface IUser extends Document {
   _id: string;
-  name: string;
+  username: string;
   password: string;
   isCorrectPassword(password: string): Promise<boolean>;
   searchHistory: ISearchParams[];
   favoriteStories: IFavoriteStory[];
 }
 
-const Schema userSchema = new Schema<IUser>({
-	name: {
+const userSchema = new Schema<IUser>({
+	username: {
 		type: String,
 		required: true,
 		unique: true,
