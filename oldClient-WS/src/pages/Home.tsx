@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import SearchBar from "@/components/SearchBar";
 import "bootstrap/dist/css/bootstrap.min.css";
+import Navbar from "@/components/Navbar";
+
 
 interface NewsArticle {
   title: string;
@@ -50,6 +52,8 @@ export default function Home() {
   };
 
   return (
+    <>
+    
     <div className="container mt-4">
       <div className="row justify-content-center">
         <div className="col-md-8">
@@ -82,5 +86,6 @@ export default function Home() {
         )}
       </div>
     </div>
+    </>
   );
 }
