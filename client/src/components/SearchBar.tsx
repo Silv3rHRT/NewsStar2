@@ -8,6 +8,7 @@ import {
   Row,
   Col,
   Container,
+  Card,
 } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -96,8 +97,9 @@ export default function SearchBar({ onSearch }: SearchProps) {
         className="relative d-flex flex-column align-items-center w-100 container"
         style={{ marginTop: "80px" }}
       >
+        <Card className="card shadow p-4 d-flex w-100 position-relative mt-5">
         {/* Search Bar with Advanced Search Dropdown */}
-        <Form className="d-flex w-100 position-relative mt-5">
+        <Form className="d-flex align-item-center w-100">
           <InputGroup className="w-100">
             <FormControl
               type="text"
@@ -158,6 +160,7 @@ export default function SearchBar({ onSearch }: SearchProps) {
             </Button>
           </InputGroup>
         </Form>
+        </Card>
 
         {/* Display Search Results */}
         <div className="mt-3 w-100">
@@ -165,7 +168,10 @@ export default function SearchBar({ onSearch }: SearchProps) {
             searchResults.map((article, index) => (
               <div key={index} className="border-bottom py-2">
                 <h5>{article.title}</h5>
+                <img width="100%" src={article.urlToImage}></img>
+                <h6>{article.publishedAt}</h6>
                 <p>{article.description}</p>
+
                 <a href={article.url} target="_blank" rel="noopener noreferrer">
                   Read More
                 </a>
