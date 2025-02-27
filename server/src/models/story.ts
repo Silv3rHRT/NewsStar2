@@ -12,10 +12,10 @@ export interface IFavoriteStory extends IStory {
 	_id: string;
 }
 
-export const Schema favoriteStorySchema<IFavoriteStory>({
-	title: String;
-	content: String;
-	image_url: String;
-	category: String;
-	article_url: String;
+export const favoriteStorySchema = new Schema<IFavoriteStory>({
+	title: String,
+	content: String,
+	image_url: String,
+	category: String,
+	article_url: String
 });
