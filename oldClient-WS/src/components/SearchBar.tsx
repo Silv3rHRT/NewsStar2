@@ -78,7 +78,7 @@ export default function SearchBar({ onSearch }: SearchProps) {
     <>
       <Container className="relative d-flex flex-column align-items-center w-100 container" style={{ marginTop: "80px" }}>
         {/* Search Bar with Advanced Search Dropdown */}
-        <Form className="d-flex w-100 position-relative">
+        <Form className="d-flex w-100 position-relative mt-5">
           <InputGroup className="w-100">
             <FormControl
               type="text"
