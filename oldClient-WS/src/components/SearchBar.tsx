@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Form, FormControl, Button, Dropdown, InputGroup, Row, Col } from "react-bootstrap";
+import { Form, FormControl, Button, Dropdown, InputGroup, Row, Col,Container } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 interface SearchProps {
@@ -76,7 +76,7 @@ export default function SearchBar({ onSearch }: SearchProps) {
 
   return (
     <>
-      <div className="d-flex flex-column align-items-center w-100 container" style={{ marginTop: "30%" }}>
+      <Container className="relative d-flex flex-column align-items-center w-100 container" style={{ marginTop: "80px" }}>
         {/* Search Bar with Advanced Search Dropdown */}
         <Form className="d-flex w-100 position-relative">
           <InputGroup className="w-100">
@@ -88,10 +88,10 @@ export default function SearchBar({ onSearch }: SearchProps) {
               className="me-2"
             />
             <Dropdown show={showFilters} onToggle={() => setShowFilters(!showFilters)}>
-              <Dropdown.Toggle variant="outline-secondary" id="dropdown-basic">
+              <Dropdown.Toggle variant="outline-secondary " id="dropdown-basic">
                 🔍
               </Dropdown.Toggle>
-              <Dropdown.Menu className="p-3 w-100">
+              <Dropdown.Menu className="p-3 w-50">
                 <Row className="mb-2">
                   <Col>
                     <Form.Label>Sort By</Form.Label>
@@ -132,7 +132,7 @@ export default function SearchBar({ onSearch }: SearchProps) {
               </div>
             ))}
         </div>
-      </div>
+      </Container>
     </>
   );
 }

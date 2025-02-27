@@ -120,9 +120,9 @@ export default function Navbar() {
           </div>
         </div>
 
-        <div className="bg-dark text-white py-2 overflow-hidden position-relative navbar-ticker-container w-100">
+        {/* <div className="bg-dark text-white py-2 overflow-hidden position-relative navbar-ticker-container">
           <div
-            className="d-flex flex-nowrap w-100"
+            className="d-flex"
             style={{
               animation: "scroll-news 20s linear infinite",
               whiteSpace: "nowrap",
@@ -140,7 +140,7 @@ export default function Navbar() {
               <span>Loading latest news...</span>
             )}
           </div>
-        </div>
+        </div> */}
         </div>
 
       <style>
