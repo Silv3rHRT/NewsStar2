@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Form, Button, Alert } from "react-bootstrap";
+import { Form, Button, Alert, Container, Card } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 interface RegisterFormProps {
@@ -23,8 +23,8 @@ export default function RegisterForm({ onRegister }: RegisterFormProps) {
   };
 
   return (
-    <div className="container d-flex justify-content-center align-items-center vh-100">
-      <div className="card shadow p-4 w-50">
+    <Container className="relative d-flex flex-column align-items-center w-100 container" style={{ marginTop: "80px" }}>
+      <Card className="card shadow p-4 d-flex w-100 position-relative mt-5">
         <h2 className="text-center mb-4">Create an Account</h2>
         {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
         
@@ -67,7 +67,7 @@ export default function RegisterForm({ onRegister }: RegisterFormProps) {
             <Button variant="dark" type="submit">Register</Button>
           </div>
         </Form>
-      </div>
-    </div>
+      </Card>
+    </Container>
   );
 }

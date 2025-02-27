@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { Button, Form, Alert } from "react-bootstrap";
+import { Button, Form, Alert, Container, Card } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 export default function LoginForm() {
@@ -31,7 +31,8 @@ export default function LoginForm() {
   };
 
   return (
-    <div className="card shadow p-4 w-100">
+    <Container className="relative d-flex flex-column align-items-center w-100 container" style={{ marginTop: "80px" }}>
+    <Card className="card shadow p-4 d-flex w-100 position-relative mt-5">
       <h2 className="text-center mb-4">Welcome back!</h2>
       {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
       
@@ -64,10 +65,8 @@ export default function LoginForm() {
           <Button variant="dark" onClick={handleLogin}>Login</Button>
         </div>
 
-        <div className="d-grid mt-3">
-          <Button variant="secondary" onClick={() => navigate("/")}>Back to Main Page</Button>
-        </div>
       </Form>
-    </div>
+    </Card>
+  </Container>
   );
 }
