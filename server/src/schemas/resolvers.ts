@@ -1,7 +1,7 @@
-import  User  from '../models/user.ts'
+import  User  from '../models/user.js'
 import { signToken, AuthenticationError } from '../utils/auth.js'
 //import { ISearchParams } from '../models/searchParams.js'
-import { IStory } from '../models/story.js'
+//import { IStory } from '../models/story.js'
 
 interface User {
 	_id: string;
@@ -18,12 +18,12 @@ interface UserArgs {
 	password: string;
 }
 
-interface SearchArgs {
-	searchTerms: string;
-	to: Date;
-	from: Date;
-	sortBy: string;
-}
+// interface SearchArgs {
+// 	searchTerms: string;
+// 	to: Date;
+// 	from: Date;
+// 	sortBy: string;
+// }
 
 interface FavoriteArgs {
 	article_url: string;
@@ -38,15 +38,16 @@ const resolvers = {
 		user: async (_parent: unknown, { userId }: UserArgs): Promise<User | null> => {
 			return await User.findOne({ _id: userId });
 		},
-		me: async (_parent: unknown, _args: unkown, context: Context): Promise<User | null> => {
+		me: async (_parent: unknown, _args: unknown, context: Context): Promise<User | null> => {
 			if (!context.user) {
 				throw new AuthenticationError('Not authenticated');
 			}
 			return await User.findOne({ _id: context.user._id });
 		},
-		news: async () => Promise<IStory[]> {
+//		news: async () => Promise< Array<IStory> > {
 			// TODO call api to fetch stories from external source
-		}
+//			return []
+//		}
 	},
 
 	Mutation: {
@@ -82,32 +83,34 @@ const resolvers = {
 			}
 			return await User.findByIdAndDelete(context.user._id);
 		},
-		search: async(_parent: unknown, {searchTerms, from, to, sortBy}: SearchArgs, context: Context): Promise<IStory[]> => {
-			if (!context.user) {
-				throw new AuthenticationError('Not authenticated');
-			}
-			const user = await User.findById(context.user._id);
-			// TODO create a new searchTermsSchema and push into user.searchHistory
-			user.save();
-			// TODO call external api to fetch stories
-		},
-		addFavorite: async(_parent: unknown, { articleUrl }: FavoriteArgs, context: Context): Promise<User> => {
+		// search: async(_parent: unknown, {_searchTerms, _from, _to, _sortBy }: SearchArgs, context: Context): Promise<Array<IStory>> => {
+		// 	if (!context.user) {
+		// 		throw new AuthenticationError('Not authenticated');
+		// 	}
+		// 	const user = await User.findById(context.user._id);
+		// 	// TODO create a new searchTermsSchema and push into user.searchHistory
+		// 	user.save();
+		// 	// TODO call external api to fetch stories
+		// },
+		addFavorite: async(_parent: unknown, { article_url }: FavoriteArgs, context: Context): Promise<User> => {
 			if (!context.user) {
 				throw new AuthenticationError('Not authenticated');
 			}
 			const user = await User.findById(context.user._id);
 			// TODO create a new favoriteStorySchema and push into user.favoriteStories
-			user.save();
-			return user;
-		}
-		removeFavorite: async(_parent: unknown, { articleUrl }: FavoriteArgs, context: Context): Promise<User> => {
+			article_url = article_url // remove later
+			user!.save();
+			return user!;
+		},
+		removeFavorite: async(_parent: unknown, { article_url }: FavoriteArgs, context: Context): Promise<User> => {
 			if (!context.user) {
 				throw new AuthenticationError('Not authenticated');
 			}
 			const user = await User.findById(context.user._id);
 			// TODO search user.favoriteStories for matching url and remove if found
-			user.save();
-			return user;		
+			article_url = article_url // remove later
+			user!.save();
+			return user!;		
 		}
 	}
 
