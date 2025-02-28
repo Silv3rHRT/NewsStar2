@@ -4,7 +4,7 @@ import Home from "../pages/Home";
 import NewsDetail from "../pages/NewsDetail";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
-import AdminPanel from "../pages/AdminPanel";
+import AdminPanel from "../pages/SavedArticles";
 
 export function AppRoutes() {
   const { user } = useAuth();
