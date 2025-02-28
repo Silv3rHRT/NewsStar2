@@ -94,7 +94,7 @@ export default function SearchBar({ onSearch }: SearchProps) {
   return (
     <>
       <Container>
-        <Card className="d-flex w-100 position-relative">
+        <Card className="d-flex w-100 position-relative border-0 bg-transparent ">
         {/* Search Bar with Advanced Search Dropdown */}
         <Form className="d-flex align-item-center w-100">
           <InputGroup className="w-100">
@@ -109,7 +109,7 @@ export default function SearchBar({ onSearch }: SearchProps) {
               show={showFilters}
               onToggle={() => setShowFilters(!showFilters)}
             >
-              <Dropdown.Toggle variant="outline-secondary " id="dropdown-basic">
+              <Dropdown.Toggle variant="outline-secondary me-1" id="dropdown-basic">
                 🔍
               </Dropdown.Toggle>
               <Dropdown.Menu className="p-3 w-30">
@@ -152,7 +152,7 @@ export default function SearchBar({ onSearch }: SearchProps) {
                 </Row>
               </Dropdown.Menu>
             </Dropdown>
-            <Button variant="dark" onClick={handleSearch}>
+            <Button variant="outline-light" onClick={handleSearch}>
               Search
             </Button>
           </InputGroup>
