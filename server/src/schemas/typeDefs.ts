@@ -8,38 +8,39 @@ const typeDefs = `
     _id: ID
     username: String
     password: String
-	searchHistory: [SearchParams]
-	favoriteStories: [String] # favorite stories keyed by URL, *not ID*
+	  searchHistory: [SearchParams]
+	  favoriteStories: [String] # favorite stories keyed by URL, *not ID*
   }
 
   type Auth {
   	token: ID!
-	user: User
+	  user: User
   }
 
   type Story {
     _id: ID
-	title: String
-	content: String
-	image_url: String
-	category: String
-	article_url: String
+	  title: String
+	  content: String
+	  image_url: String
+	  category: String
+	  article_url: String
   }
+
 
   type Query {
     user(userId: ID!): User
-	me(): User
-	news(): [Story]!
+	  me: User
+	  news: [Story]!
   }
 
   type Mutation {
-    adduser(username: string!, password: string!): Auth
-	updateuser(username: string!, password: string!): User
-	deleteUser(): User
-	login(username: String!, password: String!): Auth
-	search(searchTerms: String!): [Story]!
+    addUser(username: String!, password: String!): Auth
+	  updateUser(username: String!, password: String!): User
+	  deleteUser: User
+	  login(username: String!, password: String!): Auth
+	  search(searchTerms: String!): [Story]!
     addFavorite(article_url: String!): User
-    removeFavorite(article_url: String!) User
+    removeFavorite(article_url: String!): User
   }
 `;
 
