@@ -1,7 +1,8 @@
 import  User  from '../models/user.js'
 import { signToken, AuthenticationError } from '../utils/auth.js'
 //import { ISearchParams } from '../models/searchParams.js'
-//import { IStory } from '../models/story.js'
+import { IStory } from '../models/story.js'
+import { SearchParams } from '../models/searchParams.js';
 
 interface User {
 	_id: string;
@@ -18,12 +19,12 @@ interface UserArgs {
 	password: string;
 }
 
-// interface SearchArgs {
-// 	searchTerms: string;
-// 	to: Date;
-// 	from: Date;
-// 	sortBy: string;
-// }
+interface SearchArgs {
+ 	searchTerms: string;
+ 	to: Date;
+ 	from: Date;
+ 	sortBy: string;
+}
 
 interface FavoriteArgs {
 	article_url: string;
@@ -44,10 +45,10 @@ const resolvers = {
 			}
 			return await User.findOne({ _id: context.user._id });
 		},
-//		news: async () => Promise< Array<IStory> > {
+		news: async (): Promise<Array<IStory>> => {
 			// TODO call api to fetch stories from external source
-//			return []
-//		}
+			return []
+		}
 	},
 
 	Mutation: {
@@ -83,34 +84,46 @@ const resolvers = {
 			}
 			return await User.findByIdAndDelete(context.user._id);
 		},
-		// search: async(_parent: unknown, {_searchTerms, _from, _to, _sortBy }: SearchArgs, context: Context): Promise<Array<IStory>> => {
-		// 	if (!context.user) {
-		// 		throw new AuthenticationError('Not authenticated');
-		// 	}
-		// 	const user = await User.findById(context.user._id);
+		search: async(_parent: unknown, /*{ searchTerms, from, to, sortBy }*/args: SearchArgs, context: Context): Promise<Array<IStory>> => {
+		if (!context.user) {
+			throw new AuthenticationError('Not authenticated');
+		}
+			const user = await User.findById(context.user._id);
+			if (user == null) {
+				throw new AuthenticationError('User not found')
+			}
 		// 	// TODO create a new searchTermsSchema and push into user.searchHistory
-		// 	user.save();
+			const params = new SearchParams({...args})
+			user.searchHistory.push(params)
+		 	user.save();
 		// 	// TODO call external api to fetch stories
-		// },
+			return [];
+		},
 		addFavorite: async(_parent: unknown, { article_url }: FavoriteArgs, context: Context): Promise<User> => {
 			if (!context.user) {
 				throw new AuthenticationError('Not authenticated');
 			}
 			const user = await User.findById(context.user._id);
+			if (user == null) {
+				throw new AuthenticationError('User not found')
+			}
 			// TODO create a new favoriteStorySchema and push into user.favoriteStories
 			article_url = article_url // remove later
-			user!.save();
-			return user!;
+			user.save();
+			return user;
 		},
 		removeFavorite: async(_parent: unknown, { article_url }: FavoriteArgs, context: Context): Promise<User> => {
 			if (!context.user) {
 				throw new AuthenticationError('Not authenticated');
 			}
 			const user = await User.findById(context.user._id);
+			if (user == null) {
+				throw new AuthenticationError('User not found')
+			}
 			// TODO search user.favoriteStories for matching url and remove if found
 			article_url = article_url // remove later
-			user!.save();
-			return user!;		
+			user.save();
+			return user;		
 		}
 	}
 
