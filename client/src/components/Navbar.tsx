@@ -2,9 +2,10 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+import SearchBar from "@/components/SearchBar";
 
 export default function Navbar() {
-  const [currentDate, setCurrentDate] = useState("");
+  // const [currentDate, setCurrentDate] = useState("");
   const [timezones, setTimezones] = useState({
     Greenwich: "",
     EST: "",
@@ -19,14 +20,14 @@ export default function Navbar() {
     const updateTime = () => {
       const now = new Date();
 
-      setCurrentDate(
-        now.toLocaleDateString("en-US", {
-          weekday: "long",
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        })
-      );
+      // setCurrentDate(
+      //   now.toLocaleDateString("en-US", {
+      //     weekday: "long",
+      //     year: "numeric",
+      //     month: "long",
+      //     day: "numeric",
+      //   })
+      // );
 
       setTimezones({
         Greenwich: now.toLocaleTimeString("en-GB", {
@@ -77,50 +78,7 @@ export default function Navbar() {
   return (
     <>
     <div className="fixed-top">
-      <nav className="navbar navbar-expand-lg navbar-dark bg-dark w-100 ">
-        <div className="container-fluid">
-          <Link to="/" className="navbar-brand fs-1 fw-bold">
-            NewsStar
-          </Link>
-          <div className="navbar-text text-light ms-auto">{currentDate}</div>
-          {/* <button
-            className="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarNav"
-            aria-controls="navbarNav"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span className="navbar-toggler-icon"></span>
-          </button> */}
-          <div className="collapse navbar-collapse" id="navbarNav"></div>
-          {location.pathname !== "/login" &&
-            location.pathname !== "/register" && (
-              <Link to="/login">
-                <Button variant="outline-light" className="ms-3">
-                  Login
-                </Button>
-              </Link>
-            )}
-        </div>
-        </nav>
-        
-        <div className="bg-secondary text-white py-2 overflow-hidden position-relative navbar-ticker-container w-100">
-          <div
-            className="d-flex flex-nowrap w-100"
-            style={{ animation: "scroll 15s linear infinite",
-              whiteSpace: "nowrap", }}
-          >
-            <span className="me-3">Los Angeles: {timezones.PST}</span>
-            <span className="me-3">New York: {timezones.EST}</span>
-            <span className="me-3">London: {timezones.Greenwich}</span>
-            <span className="me-3">Kyiv: {timezones.Kyiv}</span>
-            <span>Tokyo: {timezones.Tokyo} </span>
-          </div>
-        </div>
-
-        <div className="bg-dark text-white py-2 overflow-hidden position-relative navbar-ticker-container">
+    <div className="bg-danger text-white py-1 overflow-hidden position-relative navbar-ticker-container">
           <div
             className="d-flex"
             style={{
@@ -139,6 +97,51 @@ export default function Navbar() {
             ) : (
               <span>Loading latest news...</span>
             )}
+          </div>
+        </div>
+      <nav className="navbar navbar-expand-lg navbar-dark bg-dark w-100 ">
+        <div className="container-fluid">
+          <Link to="/" className="navbar-brand fs-1 fw-bold">
+            NewsStar
+          </Link>
+          <div className="d-flex align-items-center">
+          <SearchBar onSearch={(query, filters) => console.log("Search:", query, filters)} />
+          {/* <div className="navbar-text text-light ms-auto">{currentDate}</div> */}
+          {/* <button
+            className="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span className="navbar-toggler-icon"></span>
+          </button> */}
+          <div className="collapse navbar-collapse" id="navbarNav"></div>
+          {location.pathname !== "/login" &&
+            location.pathname !== "/register" && (
+              <Link to="/login">
+                <Button variant="outline-light">
+                  Login
+                </Button>
+              </Link>
+            )}
+        </div>
+        </div>
+        </nav>
+        
+        <div className="bg-secondary text-white py-2 overflow-hidden position-relative navbar-ticker-container w-100">
+          <div
+            className="d-flex flex-nowrap w-100"
+            style={{ animation: "scroll 15s linear infinite",
+              whiteSpace: "nowrap", }}
+          >
+            <span className="me-3">Los Angeles: {timezones.PST}</span>
+            <span className="me-3">New York: {timezones.EST}</span>
+            <span className="me-3">London: {timezones.Greenwich}</span>
+            <span className="me-3">Kyiv: {timezones.Kyiv}</span>
+            <span>Tokyo: {timezones.Tokyo} </span>
           </div>
         </div>
         </div>
