@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import { Card } from "react-bootstrap";
-import "bootstrap/dist/css/bootstrap.min.css";
+import { Card, Image } from "semantic-ui-react";
+import "./css/styles.css";
 
 interface NewsCardProps {
   id: number;
@@ -12,13 +12,14 @@ interface NewsCardProps {
 
 export default function NewsCard({ id, title, image_url }: NewsCardProps) {
   return (
-    <Card className="shadow-sm rounded overflow-hidden">
+    <Card className="custom-news-card">
       <Link to={`/news/${id}`}>
-        <Card.Img variant="top" src={image_url} alt={title} className="img-fluid" />
+        <Image src={image_url} alt={title} wrapped ui={false} />
       </Link>
-      <Card.Body>
-        <Card.Title className="text-truncate">{title}</Card.Title>
-      </Card.Body>
+      <Card.Content>
+        <Card.Header className="text-truncate">{title}</Card.Header>
+      </Card.Content>
     </Card>
   );
 }
+

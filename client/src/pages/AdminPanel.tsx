@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Container, Card, Button, Form } from "react-bootstrap";
-import "bootstrap/dist/css/bootstrap.min.css";
+import 'semantic-ui-css/semantic.min.css';
 
 interface NewsArticle {
   id: number;
