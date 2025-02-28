@@ -38,6 +38,12 @@ const resolvers = {
 		user: async (_parent: unknown, { userId }: UserArgs): Promise<User | null> => {
 			return await User.findOne({ _id: userId });
 		},
+		me: async (_parent: unknown, _args: unkown, context: Context): Promise<User | null> => {
+			if (!context.user) {
+				throw new AuthenticationError('Not authenticated');
+			}
+			return await User.findOne({ _id: context.user._id });
+		},
 		news: async () => Promise<IStory[]> {
 			// TODO call api to fetch stories from external source
 		}
