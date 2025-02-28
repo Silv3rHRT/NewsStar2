@@ -28,6 +28,7 @@ const typeDefs = `
 
   type Query {
     user(userId: ID!): User
+	me(): User
 	news(): [Story]!
   }
 
