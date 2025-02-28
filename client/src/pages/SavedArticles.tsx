@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Container, Card, Button, Form } from "semantic-ui-react";
 import 'semantic-ui-css/semantic.min.css';
 
+
 interface Article {
   id: number;
   title: string;

@@ -93,11 +93,8 @@ export default function SearchBar({ onSearch }: SearchProps) {
 
   return (
     <>
-      <Container
-        className="relative d-flex flex-column align-items-center w-100 container"
-        style={{ marginTop: "80px" }}
-      >
-        <Card className="card shadow p-4 d-flex w-100 position-relative mt-5">
+      <Container>
+        <Card className="d-flex w-100 position-relative">
         {/* Search Bar with Advanced Search Dropdown */}
         <Form className="d-flex align-item-center w-100">
           <InputGroup className="w-100">
@@ -106,7 +103,7 @@ export default function SearchBar({ onSearch }: SearchProps) {
               placeholder="Search for news..."
               value={query}
               onChange={handleInputChange}
-              className="me-2"
+              className="me-1"
             />
             <Dropdown
               show={showFilters}
@@ -163,7 +160,7 @@ export default function SearchBar({ onSearch }: SearchProps) {
         </Card>
 
         {/* Display Search Results */}
-        <div className="mt-3 w-100">
+        <div className="w-100">
           {searchResults.length > 0 &&
             searchResults.map((article, index) => (
               <div key={index} className="border-bottom py-2">
