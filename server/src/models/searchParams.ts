@@ -1,7 +1,6 @@
-import { Schema, Document } from 'mongoose';
+import { Schema, model, Document } from 'mongoose';
 
 export interface ISearchParams extends Document {
-	_id: string;
 	searchTerms: string;
 	to: Date;
 	from: Date;
@@ -9,5 +8,10 @@ export interface ISearchParams extends Document {
 }
 
 export const searchParamsSchema = new Schema<ISearchParams>({
-	searchTerms: { type: String, required: true }
+	searchTerms: { type: String, required: true },
+	to: { type: Date, required: false },
+	from: { type: Date, required: false },
+	sortBy: { type: String, required: false },
 });
+
+export const SearchParams = model<ISearchParams>('SearchParams', searchParamsSchema)
