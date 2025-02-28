@@ -56,14 +56,6 @@ export default function Home() {
     
     <div className="container mt-4">
       <div className="row justify-content-center">
-        <div className="col-md-8">
-          <SearchBar onSearch={handleSearch} />
-          {searchQuery && (
-            <p className="text-muted text-center mt-3">
-              Showing results for: <strong>{searchQuery}</strong>
-            </p>
-          )}
-        </div>
       </div>
 
       <div className="row mt-4">
