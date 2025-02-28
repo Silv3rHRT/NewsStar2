@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "graphql + Apollo server interface for fetching news",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "jest"
   },
