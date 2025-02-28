@@ -14,8 +14,10 @@
     "lucide-react": "^0.474.0",
     "react": "^19.0.0",
     "react-bootstrap": "^2.9.0",
-    "react-dom": "^19.0.0",
-    "react-router-dom": "^7.1.5"
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^7.1.5",
+    "semantic-ui-css": "^2.5.0",
+    "semantic-ui-react": "^2.1.5"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",

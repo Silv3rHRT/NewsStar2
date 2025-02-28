@@ -1,48 +1,60 @@
-import { Card as BootstrapCard } from "react-bootstrap";
-import "bootstrap/dist/css/bootstrap.min.css";
-import { ReactNode } from "react";
+import { Card as SemanticCard } from "semantic-ui-react";
+import "semantic-ui-css/semantic.min.css";
+import { ReactNode, HTMLAttributes } from "react";
+import "./css/styles.css";
 
-type CardProps = {
+interface CardProps extends Omit<HTMLAttributes<HTMLDivElement>, "color"> {
   className?: string;
   children: ReactNode;
-} & React.HTMLAttributes<HTMLDivElement>;
+}
 
-export function Card({ className, children, ...props }: CardProps) {
+export function Card({ className = "", children, ...props }: CardProps) {
   return (
-    <BootstrapCard className={`shadow-sm rounded ${className || ""}`} {...props}>
+    <SemanticCard className={`custom-card ${className}`} {...props}>
       {children}
-    </BootstrapCard>
+    </SemanticCard>
   );
 }
 
-export function CardHeader({ className, children, ...props }: CardProps) {
+export function CardHeader({ className = "", children, ...props }: CardProps) {
   return (
-    <BootstrapCard.Header className={`fw-bold ${className || ""}`} {...props}>
+    <SemanticCard.Content {...props}>
+      <SemanticCard.Header className={`custom-card-header ${className}`}>
+        {children}
+      </SemanticCard.Header>
+    </SemanticCard.Content>
+  );
+}
+
+export function CardTitle({ className = "", children, ...props }: CardProps) {
+  return (
+    <h5 className={`custom-card-title ${className}`} {...props}>
       {children}
-    </BootstrapCard.Header>
+    </h5>
   );
 }
 
-export function CardTitle({ className, children, ...props }: CardProps) {
+export function CardDescription({ className = "", children, ...props }: CardProps) {
   return (
-    <h5 className={`card-title ${className || ""}`} {...props}>{children}</h5>
+    <SemanticCard.Description className={`custom-card-description ${className}`} {...props}>
+      {children}
+    </SemanticCard.Description>
   );
 }
 
-export function CardDescription({ className, children, ...props }: CardProps) {
+export function CardContent({ className = "", children, ...props }: CardProps) {
   return (
-    <p className={`text-muted ${className || ""}`} {...props}>{children}</p>
+    <SemanticCard.Content className={`custom-card-content ${className}`} {...props}>
+      {children}
+    </SemanticCard.Content>
   );
 }
 
-export function CardContent({ className, children, ...props }: CardProps) {
+export function CardFooter({ className = "", children, ...props }: CardProps) {
   return (
-    <BootstrapCard.Body className={className} {...props}>{children}</BootstrapCard.Body>
+    <SemanticCard.Content extra className={`custom-card-footer ${className}`} {...props}>
+      {children}
+    </SemanticCard.Content>
   );
 }
 
-export function CardFooter({ className, children, ...props }: CardProps) {
-  return (
-    <BootstrapCard.Footer className={className} {...props}>{children}</BootstrapCard.Footer>
-  );
-}

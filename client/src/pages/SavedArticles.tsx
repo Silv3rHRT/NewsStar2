@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
-import { Container, Card, Button, Spinner, Alert } from "react-bootstrap";
-import "bootstrap/dist/css/bootstrap.min.css";
+import { Container, Card, Button, Form } from "semantic-ui-react";
+import 'semantic-ui-css/semantic.min.css';
+
 
 interface Article {
   id: number;
   title: string;
   content: string;
   image_url: string;
-  url: string; // URL to the full article sharing
+  url: string; // URL to the full article for sharing
 }
 
 export default function SavedArticles() {

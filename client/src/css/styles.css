@@ -1,0 +1,216 @@
+:root {
+    
+    --orange-web: #faa916;
+    --white: #fbfffe;
+    --dim-gray: #6d676e;
+    --eerie-black: #1b1b1e;
+    --carmine: #96031a;
+    
+  }
+  
+  /* Global Styles */
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: var(--white);
+    color: var(--eerie-black);
+  }
+  
+  /* Navigation */
+  .nav {
+    background-color: var(--orange-web);
+    padding: 1rem;
+  }
+  
+  .nav a {
+    color: var(--white);
+    text-decoration: none;
+    margin-right: 1rem;
+    font-weight: bold;
+    transition: color 0.3s ease;
+  }
+  
+  .nav a:hover {
+    color: var(--dim-gray);
+  }
+  
+  /* Header */
+  .header {
+    background-color: var(--eerie-black);
+    color: var(--white);
+    padding: 2rem;
+    text-align: center;
+  }
+  
+  .header h1 {
+    margin: 0;
+    font-size: 2.5rem;
+  }
+  
+  
+  /* Card */
+  .card {
+    background-color: var(--white);
+    border: 1px solid var(--dim-gray);
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    margin: 1rem;
+  }
+  
+  .card .card-header {
+    font-size: 1.25rem;
+    font-weight: bold;
+    border-bottom: 1px solid var(--dim-gray);
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+  
+  .card .card-content {
+    font-size: 1rem;
+    line-height: 1.5;
+    margin-bottom: 0.5rem;
+  }
+  
+  .card .card-footer {
+    border-top: 1px solid var(--dim-gray);
+    padding-top: 0.5rem;
+    text-align: right;
+  }
+  
+  /* Footer */
+  .footer {
+    background-color: var(--dim-gray);
+    color: var(--white);
+    padding: 1rem;
+    text-align: center;
+  }
+  
+  /* Utility Classes */
+  .text-center {
+    text-align: center;
+  }
+  
+  .mt-4 {
+    margin-top: 1rem;
+  }
+  
+  .mb-4 {
+    margin-bottom: 1rem;
+  }
+  
+  .shadow-sm {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  }
+  
+  .rounded {
+    border-radius: 0.25rem;
+  }
+  
+  .gradient-bg {
+    background: linear-gradient(90deg, var(--orange-web), var(--white), var(--dim-gray), var(--eerie-black), var(--carmine));
+    color: var(--white);
+    padding: 2rem;
+    text-align: center;
+  }
+
+
+  /* Button */
+  .button {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background-color: var(--orange-web);
+    color: var(--white);
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+  }
+  
+  .button:hover {
+    background-color: var(--carmine);
+  }
+/* Variant: Primary */
+
+.primary {
+  background-color: var(--orange-web);
+  color: var(--white);
+}
+
+/* Variant: Secondary */
+.secondary {
+  background-color: var(--dim-gray);
+  color: var(--white);
+}
+
+/* Variant: Danger */
+.danger {
+  background-color: var(--carmine);
+  color: var(--white);
+}
+
+/* Variant: Success */
+.success {
+  background-color: #28a745; /* Standard green */
+  color: var(--white);
+}
+
+/* Variant: Warning */
+.warning {
+  background-color: #ffc107; /* Standard yellow */
+  color: var(--eerie-black);
+}
+
+/* Variant: Info */
+.info {
+  background-color: #17a2b8; /* Standard info blue */
+  color: var(--white);
+}
+
+/* Variant: Light */
+.light {
+  background-color: var(--white);
+  color: var(--eerie-black);
+  border: 1px solid var(--dim-gray);
+}
+
+/* Variant: Dark */
+.dark {
+  background-color: var(--eerie-black);
+  color: var(--white);
+}
+
+.primary:hover {
+  background-color: #e68a00;
+}
+
+.secondary:hover {
+  background-color: #565050;
+}
+
+.danger:hover {
+  background-color: #800e1e;
+}
+
+.success:hover {
+  background-color: #218838;
+}
+
+.warning:hover {
+  background-color: #e0a800;
+}
+
+.info:hover {
+  background-color: #138496;
+}
+
+.light:hover {
+  background-color: #f8f9fa;
+}
+
+.dark:hover {
+  background-color: #111;
+}
+  
