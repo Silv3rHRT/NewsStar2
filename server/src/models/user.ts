@@ -37,13 +37,16 @@ const userSchema = new Schema<IUser>({
 
 userSchema.pre<IUser>('save', async function(next) {
 	if (this.isNew || this.isModified('password')) {
+		console.log('hashing password', this.password)
 		const salt = 10;
 		this.password = await bcrypt.hash(this.password, salt);
 	}
+	console.log('saving password', this.password)
 	next();
 });
   
 userSchema.methods.isCorrectPassword = async function(password: string): Promise<boolean> {
+	console.log('comparing passwords', password, this.password)
 	return bcrypt.compare(password, this.password);
 }
 
