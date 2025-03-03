@@ -5,7 +5,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import SearchBar from "@/components/SearchBar";
 
 export default function Navbar() {
-  // const [currentDate, setCurrentDate] = useState("");
   const [timezones, setTimezones] = useState({
     Greenwich: "",
     EST: "",
@@ -19,43 +18,17 @@ export default function Navbar() {
   useEffect(() => {
     const updateTime = () => {
       const now = new Date();
-
-      // setCurrentDate(
-      //   now.toLocaleDateString("en-US", {
-      //     weekday: "long",
-      //     year: "numeric",
-      //     month: "long",
-      //     day: "numeric",
-      //   })
-      // );
-
       setTimezones({
-        Greenwich: now.toLocaleTimeString("en-GB", {
-          timeZone: "GMT",
-          hour12: false,
-        }),
-        EST: now.toLocaleTimeString("en-US", {
-          timeZone: "America/New_York",
-          hour12: false,
-        }),
-        PST: now.toLocaleTimeString("en-US", {
-          timeZone: "America/Los_Angeles",
-          hour12: false,
-        }),
-        Kyiv: now.toLocaleTimeString("en-UA", {
-          timeZone: "Europe/Kyiv",
-          hour12: false,
-        }),
-        Tokyo: now.toLocaleTimeString("ja-JP", {
-          timeZone: "Asia/Tokyo",
-          hour12: false,
-        }),
+        Greenwich: now.toLocaleTimeString("en-GB", { timeZone: "GMT", hour12: false }),
+        EST: now.toLocaleTimeString("en-US", { timeZone: "America/New_York", hour12: false }),
+        PST: now.toLocaleTimeString("en-US", { timeZone: "America/Los_Angeles", hour12: false }),
+        Kyiv: now.toLocaleTimeString("en-UA", { timeZone: "Europe/Kyiv", hour12: false }),
+        Tokyo: now.toLocaleTimeString("ja-JP", { timeZone: "Asia/Tokyo", hour12: false }),
       });
     };
 
     updateTime();
     const interval = setInterval(updateTime, 1000);
-
     return () => clearInterval(interval);
   }, []);
 
@@ -77,8 +50,8 @@ export default function Navbar() {
 
   return (
     <>
-    <div className="fixed-top">
-    <div className="bg-danger text-white py-1 overflow-hidden position-relative navbar-ticker-container">
+      <div className="fixed-top">
+        <div className="bg-danger text-white py-1 overflow-hidden position-relative navbar-ticker-container">
           <div
             className="d-flex"
             style={{
@@ -89,8 +62,8 @@ export default function Navbar() {
             {headlines.length > 0 ? (
               <div className="d-flex">
                 {headlines.map((headline, index) => (
-                  <span key={index} className="me-5"> Breaking News: &nbsp;
-                    {headline} &nbsp;&nbsp; &nbsp;&nbsp;
+                  <span key={index} className="me-5">
+                    Breaking News:&nbsp; {headline}&nbsp;&nbsp;&nbsp;&nbsp;
                   </span>
                 ))}
               </div>
@@ -99,71 +72,55 @@ export default function Navbar() {
             )}
           </div>
         </div>
-      <nav className="navbar navbar-expand-lg navbar-dark bg-dark w-100 ">
-        <div className="container-fluid">
-          <Link to="/" className="navbar-brand fs-1 fw-bold">
-            NewsStar
-          </Link>
-          <div className="d-flex align-items-center">
-          <SearchBar onSearch={(query, filters) => console.log("Search:", query, filters)} />
-          {/* <div className="navbar-text text-light ms-auto">{currentDate}</div> */}
-          {/* <button
-            className="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarNav"
-            aria-controls="navbarNav"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span className="navbar-toggler-icon"></span>
-          </button> */}
-          <div className="collapse navbar-collapse" id="navbarNav"></div>
-          {location.pathname !== "/login" &&
-            location.pathname !== "/register" && (
-              <Link to="/login">
-                <Button variant="outline-light">
-                  Login
-                </Button>
-              </Link>
-            )}
-        </div>
-        </div>
+        <nav className="navbar navbar-expand-lg navbar-dark bg-dark w-100">
+          <div className="container-fluid">
+            <Link to="/" className="navbar-brand fs-1 fw-bold">
+              NewsStar
+            </Link>
+            <div className="d-flex align-items-center">
+              <SearchBar onSearch={(query, filters) => console.log("Search:", query, filters)} />
+              {/* Only show buttons if not on login/register page */}
+              {location.pathname !== "/login" &&
+                location.pathname !== "/register" && (
+                  <>
+                    <Link to="/saved-articles" className="me-2">
+                      <Button variant="outline-light">Favorites</Button>
+                    </Link>
+                    <Link to="/login">
+                      <Button variant="outline-light">Login</Button>
+                    </Link>
+                  </>
+                )}
+            </div>
+          </div>
         </nav>
-        
         <div className="bg-secondary text-white py-2 overflow-hidden position-relative navbar-ticker-container w-100">
           <div
             className="d-flex flex-nowrap w-100"
-            style={{ animation: "scroll 15s linear infinite",
-              whiteSpace: "nowrap", }}
+            style={{
+              animation: "scroll 15s linear infinite",
+              whiteSpace: "nowrap",
+            }}
           >
             <span className="me-3">Los Angeles: {timezones.PST}</span>
             <span className="me-3">New York: {timezones.EST}</span>
             <span className="me-3">London: {timezones.Greenwich}</span>
             <span className="me-3">Kyiv: {timezones.Kyiv}</span>
-            <span>Tokyo: {timezones.Tokyo} </span>
+            <span>Tokyo: {timezones.Tokyo}</span>
           </div>
         </div>
-        </div>
+      </div>
 
       <style>
         {`
           @keyframes scroll {
-            from {
-              transform: translateX(100%);
-            }
-            to {
-              transform: translateX(-100%);
-            }
+            from { transform: translateX(100%); }
+            to { transform: translateX(-100%); }
           }
           
           @keyframes scroll-news {
-            from {
-              transform: translateX(100%);
-            }
-            to {
-              transform: translateX(-100%);
-            }
+            from { transform: translateX(100%); }
+            to { transform: translateX(-100%); }
           }
           
           .navbar-ticker-container {
@@ -180,3 +137,4 @@ export default function Navbar() {
     </>
   );
 }
+
