@@ -7,21 +7,15 @@ const typeDefs = `
     searchTerms: String
   }
 
-  type User {
-    _id: ID
-    username: String
-    email: String
-    password: String
-	  searchHistory: [SearchParams]
-	  favoriteStories: [String] # favorite stories keyed by URL, *not ID*
-  }
-
-  type Auth {
-  	token: ID!
-	  user: User
-  }
-
   type Story {
+	  title: String
+	  content: String
+	  imageUrl: String
+	  category: String
+	  articleUrl: String
+  }
+
+  type FavoriteStory {
     _id: ID
 	  title: String
 	  content: String
@@ -29,6 +23,22 @@ const typeDefs = `
 	  category: String
 	  articleUrl: String
   }
+
+  type User {
+    _id: ID
+    username: String
+    email: String
+    password: String
+	  searchHistory: [SearchParams]
+	  favoriteStories: [FavoriteStory] 
+  }
+
+  type Auth {
+  	token: ID!
+	  user: User
+  }
+
+
 
 
   type Query {
