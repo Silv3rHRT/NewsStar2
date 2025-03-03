@@ -4,8 +4,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 
-export const authenticateToken = ({ req }: any) => {
-  // Allows token to be sent via req.body, req.query, or headers
+export const authenticateToken = async ({ req }: any) => {
   let token = req.body.token || req.query.token || req.headers.authorization;
 
   // If the token is sent in the authorization header, extract the token from the header
