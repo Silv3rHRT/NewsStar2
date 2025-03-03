@@ -1,4 +1,7 @@
 const typeDefs = `
+
+  scalar Date
+
   type SearchParams { # currently saving only search terms, extend in future releases
     _id: ID
     searchTerms: String
@@ -7,6 +10,7 @@ const typeDefs = `
   type User {
     _id: ID
     username: String
+    email: String
     password: String
 	  searchHistory: [SearchParams]
 	  favoriteStories: [String] # favorite stories keyed by URL, *not ID*
@@ -21,9 +25,9 @@ const typeDefs = `
     _id: ID
 	  title: String
 	  content: String
-	  image_url: String
+	  imageUrl: String
 	  category: String
-	  article_url: String
+	  articleUrl: String
   }
 
 
@@ -34,13 +38,13 @@ const typeDefs = `
   }
 
   type Mutation {
-    addUser(username: String!, password: String!): Auth
-	  updateUser(username: String!, password: String!): User
+    addUser(username: String!, email: String!, password: String!): Auth
+	  updateUser(username: String!, email: String!, password: String!): User
 	  deleteUser: User
-	  login(username: String!, password: String!): Auth
-	  search(searchTerms: String!): [Story]!
-    addFavorite(article_url: String!): User
-    removeFavorite(article_url: String!): User
+	  login(emailOrUsername: String!, password: String!): Auth
+	  search(searchTerms: String!, from: Date, to: Date, sortBy: String): [Story]!
+    addFavorite(title: String!, content: String!, imageUrl: String!, category: String!, articleUrl: String!): User
+    removeFavorite(favoriteId: ID!): User
   }
 `;
 
