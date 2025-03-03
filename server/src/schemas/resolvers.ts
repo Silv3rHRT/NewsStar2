@@ -3,6 +3,7 @@ import { signToken, AuthenticationError } from '../utils/auth.js'
 import { IStory, FavoriteStory } from '../models/story.js'
 import { SearchParams } from '../models/searchParams.js';
 import { GraphQLScalarType } from 'graphql';
+import { fetchNews, fetchSearch } from '../utils/news.js'
 
 const dateScalar = new GraphQLScalarType({
   name: 'Date',
@@ -45,9 +46,9 @@ interface SearchArgs {
 interface AddFavoriteArgs {
 	title: string;
 	content: string;
-	image_url: string;
+	imageUrl: string;
 	category: string;
-	article_url: string;
+	articleUrl: string;
 }
 
 interface RemoveFavoriteArgs {
@@ -72,8 +73,7 @@ const resolvers = {
 			return await User.findOne({ _id: context.user._id });
 		},
 		news: async (): Promise<Array<IStory>> => {
-			// TODO call api to fetch stories from external source
-			return []
+			return fetchNews();
 		}
 	},
 
@@ -127,12 +127,12 @@ const resolvers = {
 			if (user == null) {
 				throw new AuthenticationError('User not found')
 			}
-		// 	// TODO create a new searchTermsSchema and push into user.searchHistory
+		
 			const params = new SearchParams({...args})
 			user.searchHistory.push(params)
 		 	user.save();
-		// 	// TODO call external api to fetch stories
-			return [];
+		
+			return fetchSearch(args);
 		},
 		addFavorite: async(_parent: unknown, args: AddFavoriteArgs, context: Context): Promise<User> => {
 			if (!context.user) {
@@ -143,7 +143,9 @@ const resolvers = {
 				throw new AuthenticationError('User not found')
 			}
 			// TODO create a new favoriteStorySchema and push into user.favoriteStories
+			console.log('args:', args)
 			const fave = new FavoriteStory({...args})
+			console.log('fave', fave)
 			user.favoriteStories.push(fave)
 			user.save();
 			return user;
