@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { Container, Card, Button, Form } from "semantic-ui-react";
-import 'semantic-ui-css/semantic.min.css';
-
+import { Container, Button, Loader, Message, Grid } from "semantic-ui-react";
+import "semantic-ui-css/semantic.min.css";
+import NewsCard from "../components/NewsCard";
+import "../css/styles.css";
 
 interface Article {
   id: number;
@@ -73,52 +74,38 @@ export default function SavedArticles() {
   };
 
   return (
-    <Container className="mt-4">
-      <h1 className="mb-4">Your Saved Articles</h1>
+    <Container style={{ marginTop: "2em" }}>
+      <h1>Your Saved Articles</h1>
 
-      {error && <Alert variant="danger">{error}</Alert>}
-      {shareMessage && <Alert variant="info">{shareMessage}</Alert>}
+      {error && <Message negative>{error}</Message>}
+      {shareMessage && <Message info>{shareMessage}</Message>}
 
       {isLoading ? (
-        <div className="text-center">
-          <Spinner animation="border" role="status">
-            <span className="visually-hidden">Loading...</span>
-          </Spinner>
-        </div>
+        <Loader active inline="centered">
+          Loading...
+        </Loader>
       ) : (
-        <div className="row">
+        <Grid columns={3} stackable>
           {articles.length > 0 ? (
             articles.map((article) => (
-              <div key={article.id} className="col-md-6 mb-4">
-                <Card>
-                  {article.image_url && (
-                    <Card.Img variant="top" src={article.image_url} alt={article.title} />
-                  )}
-                  <Card.Body>
-                    <Card.Title>{article.title}</Card.Title>
-                    <Card.Text>
-                      {article.content.length > 150
-                        ? article.content.slice(0, 150) + "..."
-                        : article.content}
-                    </Card.Text>
-                    <Button
-                      variant="outline-secondary"
-                      className="me-2"
-                      onClick={() => handleShare(article)}
-                    >
-                      Share
-                    </Button>
-                    <Button variant="danger" onClick={() => handleUnsave(article.id)}>
-                      Unsave
-                    </Button>
-                  </Card.Body>
-                </Card>
-              </div>
+              <Grid.Column key={article.id}>
+                <NewsCard {...article} />
+                <div style={{ marginTop: "1em" }}>
+                  <Button basic color="blue" onClick={() => handleShare(article)}>
+                    Share
+                  </Button>
+                  <Button basic color="red" onClick={() => handleUnsave(article.id)}>
+                    Unsave
+                  </Button>
+                </div>
+              </Grid.Column>
             ))
           ) : (
-            <p>No saved articles found.</p>
+            <Grid.Column>
+              <Message>No saved articles found.</Message>
+            </Grid.Column>
           )}
-        </div>
+        </Grid>
       )}
     </Container>
   );
