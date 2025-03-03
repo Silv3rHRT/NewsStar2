@@ -1,4 +1,4 @@
-import { Schema, Document } from 'mongoose';
+import { Schema, model, Document } from 'mongoose';
 
 export interface IStory extends Document {
 	title: string;
@@ -19,3 +19,5 @@ export const favoriteStorySchema = new Schema<IFavoriteStory>({
 	category: String,
 	article_url: String
 });
+
+export const FavoriteStory = model<IFavoriteStory>('FavoriteStory', favoriteStorySchema)
