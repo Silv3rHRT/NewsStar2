@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import { Card, Image } from "semantic-ui-react";
+import { Card, Image, Grid, Button, Icon } from "semantic-ui-react";
+import "semantic-ui-css/semantic.min.css";
 import "../css/styles.css";
-import FavoritesButton from "../components/ui/FavoritesButton";
 
 interface NewsCardProps {
   id: number;
@@ -9,6 +9,7 @@ interface NewsCardProps {
   content: string;
   image_url: string;
   category?: string;
+  article_url: string;
   isFavorite?: boolean;
   onFavoriteToggle?: (id: number, newFavoriteState: boolean) => void;
 }
@@ -16,31 +17,48 @@ interface NewsCardProps {
 export default function NewsCard({
   id,
   title,
+  content,
   image_url,
   category,
+  article_url,
   isFavorite = false,
   onFavoriteToggle,
 }: NewsCardProps) {
-  const handleFavoriteToggle = (newState: boolean) => {
+  const handleFavoriteClick = () => {
     if (onFavoriteToggle) {
-      onFavoriteToggle(id, newState);
+      onFavoriteToggle(id, !isFavorite);
     }
   };
 
   return (
-    <Card className="custom-news-card">
-      <Link to={`/news/${id}`}>
-        <Image src={image_url} alt={title} wrapped ui={false} />
-      </Link>
-      <Card.Content>
-        <Card.Header className="text-truncate">{title}</Card.Header>
-        {category && <Card.Meta>{category}</Card.Meta>}
-      </Card.Content>
-      <Card.Content extra>
-        <FavoritesButton isFavorite={isFavorite} onToggle={handleFavoriteToggle} />
-      </Card.Content>
+    <Card fluid className="custom-news-card">
+      <Grid padded>
+        <Grid.Row columns={2}>
+          <Grid.Column width={6}>
+            <Link to={`/news/${id}`}>
+              <Image src={image_url} alt={title} fluid />
+            </Link>
+          </Grid.Column>
+          <Grid.Column width={10}>
+            <Card.Content>
+              <Card.Header>{title}</Card.Header>
+              {category && <Card.Meta>{category}</Card.Meta>}
+              <Card.Description>
+                {content.length > 150 ? content.substring(0, 150) + "..." : content}
+              </Card.Description>
+            </Card.Content>
+            <Card.Content extra>
+              <Button icon onClick={handleFavoriteClick}>
+                <Icon name={isFavorite ? "heart" : "heart outline"} color={isFavorite ? "red" : undefined} />
+              </Button>
+              <Button as="a" href={article_url} target="_blank" rel="noopener noreferrer">
+                Read More
+              </Button>
+            </Card.Content>
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
     </Card>
   );
 }
-
 
