@@ -5,6 +5,9 @@ const typeDefs = `
   type SearchParams { # currently saving only search terms, extend in future releases
     _id: ID
     searchTerms: String
+    from: Date
+    to: Date
+    sortBy: String
   }
 
   type Story {
