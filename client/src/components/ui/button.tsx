@@ -1,7 +1,7 @@
 import { Button as SemanticButton } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
 import { ReactNode } from "react";
-import "./css/styles.css";
+import "../../css/styles.css";
 
 type ButtonProps = {
   variant?: "primary" | "secondary" | "danger" | "success" | "warning" | "info" | "light" | "dark";
