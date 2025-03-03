@@ -3,7 +3,6 @@ import SearchBar from "@/components/SearchBar";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Navbar from "@/components/Navbar";
 
-
 interface NewsArticle {
   title: string;
   content: string;
@@ -53,31 +52,42 @@ export default function Home() {
 
   return (
     <>
-    
-    <div className="container mt-4">
-      <div className="row justify-content-center">
-      </div>
-
-      <div className="row mt-4">
-        {news.length > 0 ? (
-          news.map((article, index) => (
-            <div key={index} className="col-md-4 mb-4">
-              <div className="card shadow-sm">
-                <img src={article.image_url} className="card-img-top" alt={article.title} />
-                <div className="card-body">
-                  <h5 className="card-title">
-                    <a href={article.article_url} className="text-decoration-none">{article.title}</a>
-                  </h5>
-                  <p className="card-text text-truncate">{article.content.substring(0, 100)}...</p>
+      <div className="container" style={{ marginTop: "25%" }}>
+        <div className="row justify-content-center"></div>
+        <SearchBar onSearch={setSearchQuery} />
+        <div className="row mt-4">
+          {news.length > 0 ? (
+            news.map((article, index) => (
+              <div key={index} className="col-md-4 mb-4">
+                <div className="card shadow-sm">
+                  <img
+                    src={article.image_url}
+                    className="card-img-top"
+                    alt={article.title}
+                  />
+                  <div className="card-body">
+                    <h5 className="card-title">
+                      <a
+                        href={article.article_url}
+                        className="text-decoration-none"
+                      >
+                        {article.title}
+                      </a>
+                    </h5>
+                    <p className="card-text text-truncate">
+                      {article.content.substring(0, 100)}...
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))
-        ) : (
-          <p className="text-center text-muted mt-4">{searchQuery ? "No results found." : "Start searching for news."}</p>
-        )}
+            ))
+          ) : (
+            <p className="text-center text-muted mt-4">
+              {searchQuery ? "No results found." : "Start searching for news."}
+            </p>
+          )}
+        </div>
       </div>
-    </div>
     </>
   );
 }
