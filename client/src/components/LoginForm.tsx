@@ -16,10 +16,12 @@ export default function LoginForm() {
   const [validated] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
+  const [showAlert, setShowAlert] = useState(false);
   const [login, { error }] = useMutation(LOGIN);
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
+    console.log(userFormData, name, value)
     setUserFormData({ ...userFormData, [name]: value });
   };
 
@@ -40,6 +42,7 @@ export default function LoginForm() {
       navigate('/');
     } catch (e) {
       console.error(e);
+      setShowAlert(true);
       setErrorMessage("Login failed. Please try again.");
     }
 
@@ -57,14 +60,22 @@ export default function LoginForm() {
         {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
         
         <Form noValidate validated={validated} onSubmit={handleFormSubmit}>
-          <Form.Group className="mb-3" controlId="email">
-            <Form.Label>Email</Form.Label>
+          <Alert
+            dismissible
+            onClose={() => setShowAlert(false)}
+            show={showAlert}
+            variant="danger"
+          >
+            Something went wrong with your login credentials!
+          </Alert>
+          <Form.Group className="mb-3">
+            <Form.Label htmlFor="email">Email</Form.Label>
             <Form.Control
-              type="email"
+              type="text"
               placeholder="Enter your email"
               name="email"
-              value={userFormData.email}
               onChange={handleInputChange}
+              value={userFormData.email || ""}              
               required
             />
             <Form.Control.Feedback type="invalid">
@@ -72,13 +83,13 @@ export default function LoginForm() {
           </Form.Control.Feedback>
           </Form.Group>
           
-          <Form.Group className="mb-3" controlId="password">
-            <Form.Label>Password</Form.Label>
+          <Form.Group className="mb-3">
+            <Form.Label htmlFor="password">Password</Form.Label>
             <Form.Control
               type="password"
               placeholder="Enter your password"
               name="password"
-              value={userFormData.password}
+              value={userFormData.password || ""}
               onChange={handleInputChange}
               required
             />
@@ -92,7 +103,13 @@ export default function LoginForm() {
           </p>
           
           <div className="d-grid">
-            <Button variant="dark" type="submit">Login</Button>
+            <Button 
+            disabled={!(userFormData.email && userFormData.password)}
+            type="submit"
+            variant="success"
+            >
+              Login
+            </Button>
           </div>
         </Form>
       </Card>
