@@ -1,5 +1,12 @@
 import { useState } from "react";
-import { Form, Input, Button, Dropdown, Grid, Container } from "semantic-ui-react";
+import {
+  Form,
+  Input,
+  Button,
+  Dropdown,
+  Grid,
+  Container,
+} from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
 
 interface SearchProps {
@@ -40,6 +47,20 @@ export default function SearchBar({ onSearch }: SearchProps) {
       onSearch("", filters);
       return;
     }
+    // Save to Local Storage
+    let searches = JSON.parse(localStorage.getItem("searchHistory") || "[]");
+    searches.unshift({ query, timestamp: new Date().toISOString() }); // Add new search to the top
+    localStorage.setItem("searchHistory", JSON.stringify(searches));
+
+// Send to API (Backend should save it in DB)
+fetch("/api/history", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ query }),
+}).catch(error => console.error("Error saving search:", error));
+
+    // Trigger the search function
+    onSearch(query, filters);
 
     // Construct the API URL with filters.
     let apiUrl = `https://newsapi.org/v2/everything?q=${query}&language=en&apiKey=5dac7609e1e747c090c2f5f1cf9c6403`;
@@ -87,9 +108,21 @@ export default function SearchBar({ onSearch }: SearchProps) {
                     fluid
                     selection
                     options={[
-                      { key: "relevancy", text: "Relevance", value: "relevancy" },
-                      { key: "popularity", text: "Popularity", value: "popularity" },
-                      { key: "publishedAt", text: "Date", value: "publishedAt" },
+                      {
+                        key: "relevancy",
+                        text: "Relevance",
+                        value: "relevancy",
+                      },
+                      {
+                        key: "popularity",
+                        text: "Popularity",
+                        value: "popularity",
+                      },
+                      {
+                        key: "publishedAt",
+                        text: "Date",
+                        value: "publishedAt",
+                      },
                     ]}
                     name="sortBy"
                     onChange={handleFilterChange}
@@ -134,4 +167,3 @@ export default function SearchBar({ onSearch }: SearchProps) {
     </Container>
   );
 }
-

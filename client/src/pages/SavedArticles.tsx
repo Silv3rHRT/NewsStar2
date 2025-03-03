@@ -74,7 +74,7 @@ export default function SavedArticles() {
   };
 
   return (
-    <Container style={{ marginTop: "2em" }}>
+    <Container style={{ marginTop: "25%" }}>
       <h1>Your Saved Articles</h1>
 
       {error && <Message negative>{error}</Message>}
