@@ -31,7 +31,7 @@ interface AddUserArgs {
 }
 
 interface LoginArgs {
-	usernameOrEmail: string;
+	emailOrUsername: string;
 	password: string;
 }
 
@@ -84,15 +84,21 @@ const resolvers = {
 
 			return { token, user };
 		},
-		login: async (_parent: unknown, { usernameOrEmail, password }: LoginArgs): Promise<{token: string; user: User }> => {
-			let user = await User.findOne({username: usernameOrEmail});
+		login: async (_parent: unknown, { emailOrUsername, password }: LoginArgs): Promise<{token: string; user: User }> => {
+
+			
+			console.log('search for user ', emailOrUsername)
+			let user = await User.findOne({username: emailOrUsername});
 			if (!user) {
-				user = await User.findOne({email: usernameOrEmail});
+				console.log('search for email ', emailOrUsername)
+				user = await User.findOne({email: emailOrUsername});
 			}
 			if (!user) {
+				console.log('not found')
 				throw new AuthenticationError('invalid');
 			}
 
+			console.log('check password', password)
 			if (!(await user.isCorrectPassword(password))) {
 				throw new AuthenticationError('invalid');
 			}
