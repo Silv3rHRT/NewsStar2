@@ -6,6 +6,7 @@ import { IFavoriteStory, favoriteStorySchema } from './story.js';
 interface IUser extends Document {
   _id: string;
   username: string;
+  email: string;
   password: string;
   isCorrectPassword(password: string): Promise<boolean>;
   searchHistory: ISearchParams[];
@@ -14,6 +15,12 @@ interface IUser extends Document {
 
 const userSchema = new Schema<IUser>({
 	username: {
+		type: String,
+		required: true,
+		unique: true,
+		trim: true
+	},
+	email: {
 		type: String,
 		required: true,
 		unique: true,
