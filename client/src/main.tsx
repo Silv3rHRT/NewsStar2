@@ -1,18 +1,37 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import { BrowserRouter } from "react-router-dom";
-import App from "./App";
-import { AuthProvider } from "./context/AuthContext";
-import 'semantic-ui-css/semantic.min.css';
-import './css/styles.css';
+import ReactDOM from 'react-dom/client'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import 'bootstrap/dist/css/bootstrap.min.css'
+
+import App from './App.jsx'
+import Home from './pages/Home.js'
+import Login from './pages/Login.js'
+import Register from './pages/Register.js'
+import SavedArticles from './pages/SavedArticles.js'
 
 
-ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <AuthProvider>
-        <App />
-      </AuthProvider>
-    </BrowserRouter>
-  </React.StrictMode>
-);
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <App />,
+    errorElement: <h1 className='display-2'>Wrong page!</h1>,
+    children: [
+      {
+        index: true,
+        element: <Home />
+      }, {
+        path: '/login',
+        element: <Login />
+      }, {
+        path: '/register',
+        element: <Register />
+      }, {
+        path: '/favorites',
+        element: <SavedArticles />
+      }
+    ]
+  }
+])
+
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <RouterProvider router={router} />
+)

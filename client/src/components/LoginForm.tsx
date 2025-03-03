@@ -50,6 +50,7 @@ export default function LoginForm() {
   };
 
   return (
+    <>
     <Container className="relative d-flex flex-column align-items-center w-100 container" style={{ marginTop: "80px" }}>
       <Card className="card shadow p-4 d-flex w-100 position-relative mt-5">
         <h2 className="text-center mb-4">Welcome back!</h2>
@@ -66,6 +67,9 @@ export default function LoginForm() {
               onChange={handleInputChange}
               required
             />
+            <Form.Control.Feedback type="invalid">
+            Email is required!
+          </Form.Control.Feedback>
           </Form.Group>
           
           <Form.Group className="mb-3" controlId="password">
@@ -78,6 +82,9 @@ export default function LoginForm() {
               onChange={handleInputChange}
               required
             />
+            <Form.Control.Feedback type="invalid">
+            Password is required!
+            </Form.Control.Feedback>
           </Form.Group>
           
           <p className="text-center">
@@ -93,5 +100,6 @@ export default function LoginForm() {
         <div className="my-3 p-3 bg-danger text-white">{error.message}</div>
       )}
     </Container>
+    </>
   );
 }
