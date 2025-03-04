@@ -60,7 +60,7 @@ export default function Home() {
 
     // Only save the search if it's new
     let searches = JSON.parse(localStorage.getItem("searchHistory") || "[]");
-    if (!searches.some(s => s.query === query)) {
+    if (!searches.some((s: { query: string }) => s.query === query)) {
         searches.unshift({ query, timestamp: new Date().toISOString() });
         localStorage.setItem("searchHistory", JSON.stringify(searches));
     }

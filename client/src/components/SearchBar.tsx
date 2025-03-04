@@ -6,6 +6,7 @@ import {
   Dropdown,
   Grid,
   Container,
+  DropdownProps,
 } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
 
@@ -35,11 +36,13 @@ export default function SearchBar({ onSearch }: SearchProps) {
     }
   };
 
-  const handleFilterChange = (
-    _: React.SyntheticEvent<HTMLElement>,
-    { name, value }: { name: string; value: string }
-  ) => {
-    setFilters({ ...filters, [name]: value });
+  const handleFilterChange = (_: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => {
+    if (data.name && data.value) {
+      setFilters((prevFilters) => ({
+        ...prevFilters,
+        [data.name]: data.value as string,
+      }));
+    }
   };
 
   const handleSearch = async () => {
