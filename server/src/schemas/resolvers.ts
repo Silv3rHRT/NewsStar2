@@ -85,7 +85,7 @@ const resolvers = {
 			return { token, user };
 		},
 		login: async (_parent: unknown, { emailOrUsername, password }: LoginArgs): Promise<{token: string; user: User }> => {
-
+			console.log("im being hit here")
 			
 			console.log('search for user ', emailOrUsername)
 			let user = await User.findOne({username: emailOrUsername});

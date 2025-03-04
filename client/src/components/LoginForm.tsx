@@ -10,7 +10,7 @@ import { useMutation } from "@apollo/client";
 
 export default function LoginForm() {
   const [userFormData, setUserFormData] = useState({
-    email: "",
+    emailOrUsername: "",
     password: "",
   });
   const [validated] = useState(false);
@@ -21,7 +21,7 @@ export default function LoginForm() {
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    console.log(userFormData, name, value)
+    // console.log(userFormData, name, value)
     setUserFormData({ ...userFormData, [name]: value });
   };
 
@@ -36,8 +36,8 @@ export default function LoginForm() {
     }
 
     try {
-      const { data } = await login({ variables: { ...userFormData } });
-
+      const { data } = await login({ variables: {...userFormData} });
+      console.log("data coming back", data)
       Auth.login(data.login.token);
       navigate('/');
     } catch (e) {
@@ -47,7 +47,7 @@ export default function LoginForm() {
     }
 
     setUserFormData({
-      email: "",
+      emailOrUsername: "",
       password: "",
     });
   };
@@ -69,17 +69,17 @@ export default function LoginForm() {
             Something went wrong with your login credentials!
           </Alert>
           <Form.Group className="mb-3">
-            <Form.Label htmlFor="email">Email</Form.Label>
+            <Form.Label htmlFor="emailOrUsername">Email or Username</Form.Label>
             <Form.Control
               type="text"
-              placeholder="Enter your email"
-              name="email"
+              placeholder="Enter your email or username"
+              name="emailOrUsername"
               onChange={handleInputChange}
-              value={userFormData.email || ""}              
+              value={userFormData.emailOrUsername || ""}              
               required
             />
             <Form.Control.Feedback type="invalid">
-            Email is required!
+            Email or username is required!
           </Form.Control.Feedback>
           </Form.Group>
           
@@ -104,7 +104,7 @@ export default function LoginForm() {
           
           <div className="d-grid">
             <Button 
-            disabled={!(userFormData.email && userFormData.password)}
+            disabled={!(userFormData.emailOrUsername && userFormData.password)}
             type="submit"
             variant="success"
             >
