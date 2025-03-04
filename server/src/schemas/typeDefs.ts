@@ -54,7 +54,7 @@ const typeDefs = `
     addUser(username: String!, email: String!, password: String!): Auth
 	  updateUser(username: String!, email: String!, password: String!): User
 	  deleteUser: User
-	  login(usernameOrEmail: String, password: String!): Auth
+	  login(emailOrUsername: String, password: String!): Auth
 	  search(searchTerms: String!, from: Date, to: Date, sortBy: String): [Story]!
     addFavorite(title: String!, content: String!, imageUrl: String!, category: String!, articleUrl: String!): User
     removeFavorite(favoriteId: ID!): User
