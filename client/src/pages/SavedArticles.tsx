@@ -89,7 +89,7 @@ export default function SavedArticles() {
           {articles.length > 0 ? (
             articles.map((article) => (
               <Grid.Column key={article.id}>
-                <NewsCard {...article} />
+                <NewsCard {...article} article_url={article.url} />
                 <div style={{ marginTop: "1em" }}>
                   <Button basic color="blue" onClick={() => handleShare(article)}>
                     Share
