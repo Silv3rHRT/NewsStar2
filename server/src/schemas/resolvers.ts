@@ -52,7 +52,7 @@ interface AddFavoriteArgs {
 }
 
 interface RemoveFavoriteArgs {
-	_id: string;
+	favoriteId: string;
 }
 
 interface Context {
@@ -152,7 +152,7 @@ const resolvers = {
 			user.save();
 			return user;
 		},
-		removeFavorite: async(_parent: unknown, { _id }: RemoveFavoriteArgs, context: Context): Promise<User> => {
+		removeFavorite: async(_parent: unknown, { favoriteId }: RemoveFavoriteArgs, context: Context): Promise<User> => {
 			if (!context.user) {
 				throw new AuthenticationError('Not authenticated');
 			}
@@ -161,7 +161,8 @@ const resolvers = {
 				throw new AuthenticationError('User not found')
 			}
 			// TODO search user.favoriteStories for matching url and remove if found
-			const index = user.favoriteStories.findIndex(element => element._id == _id)
+			const index = user.favoriteStories.findIndex(element => element._id == favoriteId)
+			
 			if (index >= 0) {
 				user.favoriteStories.splice(index, 1)
 			}
