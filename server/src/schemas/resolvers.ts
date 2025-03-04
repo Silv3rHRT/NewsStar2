@@ -80,7 +80,7 @@ const resolvers = {
 	Mutation: {
 		addUser: async (_parent: unknown, { username, email, password }: AddUserArgs): Promise<{ token: string; user: User }> => {
 			const user = await User.create({ username, email, password });
-			const token = signToken(user.username, user._id);
+			const token = signToken(user.username, user.email, user._id);
 
 			return { token, user };
 		},
@@ -89,6 +89,8 @@ const resolvers = {
 			
 			console.log('search for user ', emailOrUsername)
 			let user = await User.findOne({username: emailOrUsername});
+		
+
 			if (!user) {
 				console.log('search for email ', emailOrUsername)
 				user = await User.findOne({email: emailOrUsername});
@@ -102,8 +104,8 @@ const resolvers = {
 			if (!(await user.isCorrectPassword(password))) {
 				throw new AuthenticationError('invalid');
 			}
-
-			const token = signToken(user.username, user._id);
+			console.log('user', user);
+			const token = signToken( user?.username, user?.email, user._id);
 
 			return { token, user };
 		},
