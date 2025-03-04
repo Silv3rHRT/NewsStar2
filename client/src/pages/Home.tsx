@@ -3,6 +3,7 @@ import "semantic-ui-css/semantic.min.css";
 import Navbar from "@/components/Navbar";
 import NewsCard from "@/components/NewsCard";
 import SearchBar from "@/components/SearchBar";
+import { SearchResult } from "@/components/SearchBar";
 
 interface NewsArticle {
   id: number;
@@ -15,7 +16,19 @@ interface NewsArticle {
 }
 
 export default function Home() {
+
+
+
+
+
+
   const [news, setNews] = useState<NewsArticle[]>([]);
+  
+
+
+
+
+
   const [searchQuery, setSearchQuery] = useState("");
 
   async function retrieveNews() {
@@ -38,14 +51,14 @@ export default function Home() {
     retrieveNews();
   }, []);
 
-  const handleSearchResults = (results: any) => {
-    const articles = results.articles.map((element: any, index: number) => ({
+  const handleSearchResults = (results: SearchResult[]) => {
+    const articles = results.map((element: any, index: number) => ({
       id: index,
       title: element.title,
       content: element.content || "",
-      image_url: element.urlToImage,
+      image_url: element.imageUrl,
       category: "", // Update if category info is available
-      article_url: element.url,
+      article_url: element.articleUrl,
       isFavorite: false,
     }));
     setNews(articles);
@@ -93,7 +106,7 @@ export default function Home() {
     <>
       <Navbar />
       <div className="container" style={{ marginTop: "250px", textAlign: "center" }}>
-        <SearchBar onSearch={handleSearch} />
+        <SearchBar handleSearchResults ={handleSearchResults} />
       </div>
       <div className="container" style={{ marginTop: "20px" }}>
         <div className="row mt-4">

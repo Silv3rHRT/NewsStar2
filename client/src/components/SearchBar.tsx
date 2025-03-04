@@ -9,12 +9,24 @@ import {
   DropdownProps,
 } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
+import { SEARCH } from '../utils/mutations.js'
+import { useMutation } from "@apollo/client";
 
-interface SearchProps {
-  onSearch: (query: string, filters: any) => void;
+export interface SearchResult {
+  articleUrl:string;
+  category:string;
+  content:string;
+  imageUrl:string;
+  title:string;
 }
 
-export default function SearchBar({ onSearch }: SearchProps) {
+interface SearchProps {
+  handleSearchResults:  (results: SearchResult[]) => void;
+}
+
+
+export default function SearchBar({ handleSearchResults }: SearchProps) {
+  const [search, { error }] = useMutation(SEARCH)
   const [query, setQuery] = useState("");
   const [filters, setFilters] = useState({
     sortBy: "",
@@ -32,7 +44,7 @@ export default function SearchBar({ onSearch }: SearchProps) {
   const handleInputChange = (_: any, { value }: any) => {
     setQuery(value);
     if (value.trim() === "") {
-      onSearch("", filters);
+      // onSearch("", filters);
     }
   };
 
@@ -47,7 +59,7 @@ export default function SearchBar({ onSearch }: SearchProps) {
 
   const handleSearch = async () => {
     if (!query.trim()) {
-      onSearch("", filters);
+      // onSearch("", filters);
       return;
     }
     // Save to Local Storage
@@ -55,31 +67,38 @@ export default function SearchBar({ onSearch }: SearchProps) {
     searches.unshift({ query, timestamp: new Date().toISOString() }); // Add new search to the top
     localStorage.setItem("searchHistory", JSON.stringify(searches));
 
-// Send to API (Backend should save it in DB)
-fetch("/api/history", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ query }),
-}).catch(error => console.error("Error saving search:", error));
+// // Send to API (Backend should save it in DB)
+// fetch("/api/history", {
+//   method: "POST",
+//   headers: { "Content-Type": "application/json" },
+//   body: JSON.stringify({ query }),
+// }).catch(error => console.error("Error saving search:", error));
 
     // Trigger the search function
-    onSearch(query, filters);
+    const searchResults = await search({variables: {
+      searchTerms: query,
+      from: filters.from,
+      to:filters.to,
+      sortBy: filters.sortBy 
+    }})
+
+    handleSearchResults(searchResults as SearchResult[])
 
     // Construct the API URL with filters.
-    let apiUrl = `https://newsapi.org/v2/everything?q=${query}&language=en&apiKey=5dac7609e1e747c090c2f5f1cf9c6403`;
-    if (filters.sortBy) apiUrl += `&sortBy=${filters.sortBy}`;
-    if (filters.from) apiUrl += `&from=${filters.from}`;
-    if (filters.to) apiUrl += `&to=${filters.to}`;
+    // let apiUrl = `https://newsapi.org/v2/everything?q=${query}&language=en&apiKey=5dac7609e1e747c090c2f5f1cf9c6403`;
+    // if (filters.sortBy) apiUrl += `&sortBy=${filters.sortBy}`;
+    // if (filters.from) apiUrl += `&from=${filters.from}`;
+    // if (filters.to) apiUrl += `&to=${filters.to}`;
 
-    try {
-      const response = await fetch(apiUrl);
-      if (!response.ok) return;
-      const data = await response.json();
-      onSearch(query, filters);
-      // Optionally, you can pass data upward if needed.
-    } catch (error) {
-      console.error("Error fetching news from API", error);
-    }
+    // try 
+    //   const response = await fetch(apiUrl);
+    //   if (!response.ok) return;
+    //   const data = await response.json();
+    //   onSearch(query, filters);
+    //   // Optionally, you can pass data upward if needed.
+    // } catch (error) {
+    //   console.error("Error fetching news from API", error);
+    // }
   };
 
   return (
