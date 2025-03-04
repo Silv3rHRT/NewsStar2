@@ -22,7 +22,7 @@ export default function Register() {
 
   return (
     <div className="w-screen mt-[300px] flex items-center justify-center">
-      <RegisterForm onRegister={handleRegister} />
+      <RegisterForm  />
     </div>
   );
 }

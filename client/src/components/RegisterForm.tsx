@@ -2,24 +2,73 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Form, Button, Alert, Container, Card } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { useMutation } from "@apollo/client";
+import { SIGN_UP } from "../utils/mutations";
+import { useNavigate } from "react-router-dom";
+import Auth from "../utils/auth";
+import type { FormEvent } from "react";
+import type { ChangeEvent } from "react";
 
-interface RegisterFormProps {
-  onRegister: (username: string, password: string, email: string) => void;
+
+interface User {
+  username: string | null;
+  email: string | null;
+  password: string | null;
 }
 
-export default function RegisterForm({ onRegister }: RegisterFormProps) {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+export default function RegisterForm () {
+  const [userFormData, setUserFormData] = useState<User>({
+    username: "",
+    email: "",
+    password: "",
+  });
+  const [errorMessage, setErrorMessage] = useState(false);
+  const [signUp, {error}] = useMutation(SIGN_UP);
+  const [validated] = useState(false);
+  const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!username || !password || !email) {
-      setErrorMessage("⚠ Please fill out all fields.");
+
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+      const { name, value } = event.target;
+      console.log(userFormData, name, value)
+      setUserFormData({ ...userFormData, [name]: value });
+    };
+
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+  
+    // check if form has everything (as per react-bootstrap docs)
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
       return;
     }
-    onRegister(username, password, email);
+  
+    try {
+  
+      const { data } = await signUp({ variables: {...userFormData} });
+  
+      if (!data) {
+        throw new Error("Failed to create account");
+      }
+  
+      console.log('Sign up successful, received data:', data);
+  
+      Auth.login(data.signUp.token);
+      navigate('/');
+    } catch (err) {
+      console.error('Error during sign up:', err);
+      setErrorMessage(true);
+    }
+
+    setUserFormData({
+      username: "",
+      email: "",
+      password: "",
+    });
+
   };
 
   return (
@@ -28,34 +77,48 @@ export default function RegisterForm({ onRegister }: RegisterFormProps) {
         <h2 className="text-center mb-4">Create an Account</h2>
         {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
         
-        <Form onSubmit={handleSubmit}>
-          <Form.Group className="mb-3" controlId="username">
-            <Form.Label>Username</Form.Label>
+        <Form noValidate validated={validated} onSubmit={handleSubmit}>
+          <Alert
+            dismissible
+            onClose={() => setErrorMessage(false)}
+            show={errorMessage}
+            variant="danger"
+          >
+            Something went wrong with your sign up!
+          </Alert>
+          <Form.Group className="mb-3" >
+            <Form.Label htmlFor="username">Username</Form.Label>
             <Form.Control
               type="text"
               placeholder="Enter username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              name="username"
+              value={userFormData.username || ""}
+              onChange={handleInputChange}
+              required
             />
           </Form.Group>
 
-          <Form.Group className="mb-3" controlId="email">
-            <Form.Label>Email</Form.Label>
+          <Form.Group className="mb-3" >
+            <Form.Label htmlFor="email">Email</Form.Label>
             <Form.Control
-              type="email"
+              type="text"
               placeholder="Enter email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              name="email"
+              value={userFormData.email || ""}
+              onChange={handleInputChange}
+              required
             />
           </Form.Group>
 
-          <Form.Group className="mb-3" controlId="password">
-            <Form.Label>Password</Form.Label>
+          <Form.Group className="mb-3">
+            <Form.Label htmlFor="password">Password</Form.Label>
             <Form.Control
-              type="password"
+              type="text"
               placeholder="Enter password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              name="password"
+              value={userFormData.password || ""}
+              onChange={handleInputChange}
+              required
             />
           </Form.Group>
 
@@ -68,6 +131,9 @@ export default function RegisterForm({ onRegister }: RegisterFormProps) {
           </div>
         </Form>
       </Card>
+            {error && (
+        <div className="my-3 p-3 bg-danger text-white">{error.message}</div>
+      )}
     </Container>
   );
 }
