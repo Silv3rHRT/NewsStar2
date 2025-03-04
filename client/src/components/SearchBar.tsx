@@ -82,7 +82,7 @@ export default function SearchBar({ handleSearchResults }: SearchProps) {
       sortBy: filters.sortBy 
     }})
 
-    handleSearchResults(searchResults as SearchResult[])
+    handleSearchResults(searchResults.data.search as SearchResult[])
 
     // Construct the API URL with filters.
     // let apiUrl = `https://newsapi.org/v2/everything?q=${query}&language=en&apiKey=5dac7609e1e747c090c2f5f1cf9c6403`;

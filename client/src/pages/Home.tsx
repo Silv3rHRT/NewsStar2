@@ -52,6 +52,7 @@ export default function Home() {
   }, []);
 
   const handleSearchResults = (results: SearchResult[]) => {
+    console.log(results)
     const articles = results.map((element: any, index: number) => ({
       id: index,
       title: element.title,
