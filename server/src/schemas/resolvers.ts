@@ -89,13 +89,11 @@ const resolvers = {
 			
 			console.log('search for user ', emailOrUsername)
 			let user = await User.findOne({username: emailOrUsername});
-		login: async (_parent: any, { usernameOrEmail, password }: LoginArgs): Promise<{token: string; user: User }> => {
-			let user= await User.findOne({username: usernameOrEmail});
+		
 
 			if (!user) {
 				console.log('search for email ', emailOrUsername)
 				user = await User.findOne({email: emailOrUsername});
-				 user = await User.findOne({email: usernameOrEmail});
 			}
 			if (!user) {
 				console.log('not found')
