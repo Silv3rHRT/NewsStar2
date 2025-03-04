@@ -7,6 +7,7 @@ import Home from './pages/Home.js'
 import Login from './pages/Login.js'
 import Register from './pages/Register.js'
 import SavedArticles from './pages/SavedArticles.js'
+import History from './pages/History.js'
 
 
 const router = createBrowserRouter([
@@ -27,6 +28,9 @@ const router = createBrowserRouter([
       }, {
         path: '/favorites',
         element: <SavedArticles />
+      }, {
+        path: '/history',
+        element: <History />
       }
     ]
   }

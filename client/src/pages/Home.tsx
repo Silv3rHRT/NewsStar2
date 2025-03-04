@@ -57,10 +57,20 @@ export default function Home() {
       setNews([]);
       return;
     }
+
+    // Only save the search if it's new
+    let searches = JSON.parse(localStorage.getItem("searchHistory") || "[]");
+    if (!searches.some(s => s.query === query)) {
+        searches.unshift({ query, timestamp: new Date().toISOString() });
+        localStorage.setItem("searchHistory", JSON.stringify(searches));
+    }
+
+    // Fetch search results (only one API call)
     let apiUrl = `https://newsapi.org/v2/everything?q=${query}&language=en&apiKey=5dac7609e1e747c090c2f5f1cf9c6403`;
     if (filters.sortBy) apiUrl += `&sortBy=${filters.sortBy}`;
     if (filters.from) apiUrl += `&from=${filters.from}`;
     if (filters.to) apiUrl += `&to=${filters.to}`;
+
     try {
       const response = await fetch(apiUrl);
       if (!response.ok) return;
@@ -69,7 +79,7 @@ export default function Home() {
     } catch (error) {
       console.error("Error fetching news from API", error);
     }
-  };
+};
 
   const handleFavoriteToggle = (id: number, newFavoriteState: boolean) => {
     setNews((prev) =>

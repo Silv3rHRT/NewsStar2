@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import SearchBar from "@/components/SearchBar";
+
 
 export default function Navbar() {
   const [timezones, setTimezones] = useState({
@@ -78,13 +78,16 @@ export default function Navbar() {
               NewsStar
             </Link>
             <div className="d-flex align-items-center">
-              <SearchBar onSearch={(query, filters) => console.log("Search:", query, filters)} />
               {/* Only show buttons if not on login/register page */}
               {location.pathname !== "/login" &&
-                location.pathname !== "/register" && (
+                location.pathname !== "/register" && 
+                (
                   <>
-                    <Link to="/saved-articles" className="me-2">
+                    <Link to="/favorites" className="me-2">
                       <Button variant="outline-light">Favorites</Button>
+                    </Link>
+                    <Link to="/history" className="me-2">
+                      <Button variant="outline-light">History</Button>
                     </Link>
                     <Link to="/login">
                       <Button variant="outline-light">Login</Button>
