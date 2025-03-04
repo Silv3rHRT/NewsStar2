@@ -3,6 +3,7 @@ import "semantic-ui-css/semantic.min.css";
 import Navbar from "@/components/Navbar";
 import NewsCard from "@/components/NewsCard";
 import SearchBar from "@/components/SearchBar";
+import { useMutation } from "@apollo/client";
 
 interface NewsArticle {
   id: number;
@@ -15,8 +16,21 @@ interface NewsArticle {
 }
 
 export default function Home() {
+
+
+
+
+
+
   const [news, setNews] = useState<NewsArticle[]>([]);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [search, {error}] =useMutation (SEARCH);
+
+
+
+
+
+
+  //const [searchQuery, setSearchQuery] = useState("");
 
   async function retrieveNews() {
     try {
@@ -93,7 +107,7 @@ export default function Home() {
     <>
       <Navbar />
       <div className="container" style={{ marginTop: "250px", textAlign: "center" }}>
-        <SearchBar onSearch={handleSearch} />
+        <SearchBar handlesearchResults ={handleSearchResults} />
       </div>
       <div className="container" style={{ marginTop: "20px" }}>
         <div className="row mt-4">
