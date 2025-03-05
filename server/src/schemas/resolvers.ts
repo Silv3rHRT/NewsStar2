@@ -134,14 +134,21 @@ const resolvers = {
 			// Create a new instance of SearchParams but convert it to a plain object
 			const paramsInstance = new SearchParams({ ...args });
 			const params = paramsInstance.toObject(); // Removes Mongoose metadata like `_id`
-		
-			// Prevent duplicate search history entries using `$addToSet`
-			await User.findByIdAndUpdate(
-				user._id,
-				{ $addToSet: { searchHistory: params } }, // Ensures uniqueness
-				{ new: true }
-			);
-		
+			const index = user.searchHistory.findIndex(element => element.searchTerms == params.searchTerms)
+			if (index == 0) {
+				user.searchHistory[index] = params;
+			}
+			else if (index > 0) {
+				for (let i = index; i > 0; --i) {
+					user.searchHistory[i] = user.searchHistory[i - 1]
+				}
+				user.searchHistory[0] = params
+			}
+			else {
+				user.searchHistory.push(params);
+			}
+			user.save();
+					
 			return fetchSearch(args);
 		},				
 		addFavorite: async(_parent: unknown, args: AddFavoriteArgs, context: Context): Promise<User> => {
