@@ -121,21 +121,29 @@ const resolvers = {
 			}
 			return await User.findByIdAndDelete(context.user._id);
 		},
-		search: async(_parent: unknown, args: SearchArgs, context: Context): Promise<Array<IStory>> => {
-		if (!context.user) {
-			throw new AuthenticationError('Not authenticated');
-		}
-			const user = await User.findById(context.user._id);
-			if (user == null) {
-				throw new AuthenticationError('User not found')
+		search: async (_parent: unknown, args: SearchArgs, context: Context): Promise<Array<IStory>> => {
+			if (!context.user) {
+				throw new AuthenticationError('Not authenticated');
 			}
 		
-			const params = new SearchParams({...args})
-			user.searchHistory.push(params)
-		 	user.save();
+			const user = await User.findById(context.user._id);
+			if (!user) {
+				throw new AuthenticationError('User not found');
+			}
+		
+			// Create a new instance of SearchParams but convert it to a plain object
+			const paramsInstance = new SearchParams({ ...args });
+			const params = paramsInstance.toObject(); // Removes Mongoose metadata like `_id`
+		
+			// Prevent duplicate search history entries using `$addToSet`
+			await User.findByIdAndUpdate(
+				user._id,
+				{ $addToSet: { searchHistory: params } }, // Ensures uniqueness
+				{ new: true }
+			);
 		
 			return fetchSearch(args);
-		},
+		},				
 		addFavorite: async(_parent: unknown, args: AddFavoriteArgs, context: Context): Promise<User> => {
 			if (!context.user) {
 				throw new AuthenticationError('Not authenticated');
