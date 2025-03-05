@@ -8,10 +8,22 @@ export interface ISearchParams extends Document {
 }
 
 export const searchParamsSchema = new Schema<ISearchParams>({
-	searchTerms: { type: String, required: true },
-	to: { type: Date, required: false },
-	from: { type: Date, required: false },
-	sortBy: { type: String, required: false },
+  searchTerms: {
+	type: String,
+	required: true,
+},
+  to: {
+	type: Date,
+	required: false,
+},
+  from: {
+	type: Date,
+	required: false,
+ },
+  sortBy: {
+	type: String,
+	required: false,
+},
 });
 
 export const SearchParams = model<ISearchParams>('SearchParams', searchParamsSchema)
