@@ -14,10 +14,12 @@ function transformStories(data: any): Array<IStory> {
       }})
 }
 
+const API_KEY = process.env.API_KEY;
+const API_KEY2 = process.env.API_KEY2;
 
-export async function fetchSearch({searchTerms, from, to, sortBy}: any): Promise<Array<IStory>> {
-    const API_KEY = process.env.API_KEY;
-    const baseUrl = `https://newsapi.org/v2/everything?apiKey=${API_KEY}`
+
+export async function fetchSearch({searchTerms, from, to, sortBy}: any, key = API_KEY): Promise<Array<IStory>> {
+    const baseUrl = `https://newsapi.org/v2/everything?apiKey=${key}`
     
     const params: { [key: string]: string } = {}; //creating an object with a key of string and values of string
         
@@ -37,5 +39,5 @@ export async function fetchSearch({searchTerms, from, to, sortBy}: any): Promise
 }
 
 export async function fetchNews(): Promise<Array<IStory>> {
-    return fetchSearch({searchTerms: "general"});
+    return fetchSearch({searchTerms: "general"}, API_KEY2 || API_KEY);
 }
