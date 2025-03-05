@@ -1,13 +1,16 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Container, Button, Loader, Message, Grid } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
 import NewsCard from "../components/NewsCard";
 import "../css/styles.css";
 import { useQuery } from "@apollo/client";
 import { QUERY_ME } from "@/utils/queries";
+import { REMOVE_FAVORITE, ADD_FAVORITE } from "@/utils/mutations";
+import { useMutation } from "@apollo/client";
+import { FavoriteStory } from "@/components/SearchBar";
 
 interface Article {
-  favoriteId: string;
+  favoriteId: string | undefined;
   id: number;
   title: string;
   content: string;
@@ -15,11 +18,26 @@ interface Article {
   articleUrl: string; // URL to the full article for sharing
   image_url: string;
   article_url: string;
+  category: string;
 }
 
+function mapFavoriteStories(favoriteStories: any) {
+  return favoriteStories.map((story: any) => ({
+       favoriteId: story._id,
+       title: story.title,
+       content: story.content,
+       image_url: story.imageUrl,
+       article_url: story.articleUrl,
+       category: story.category
+    }));
+}
 export default function SavedArticles() {
   const { loading, error, data } = useQuery(QUERY_ME);
   const [shareMessage, setShareMessage] = useState<string | null>(null);
+  const [articles, setArticles] = useState<Array<Article>>([])
+  useEffect(() => {if (!loading) {
+    setArticles(mapFavoriteStories(data.me.favoriteStories))
+  }}, [loading,data])
 
   const handleShare = (article: Article) => {
     if (navigator.share) {
@@ -42,6 +60,37 @@ export default function SavedArticles() {
     }
   };
 
+  const [removeFavorite] = useMutation(REMOVE_FAVORITE)
+  const [addFavorite] = useMutation(ADD_FAVORITE)
+  
+  const getFavoriteId = (favorites: FavoriteStory[], articleUrl: string): string | undefined => {
+    const index = favorites.findIndex(element => element.articleUrl == articleUrl)
+    if (index >= 0) {
+      return favorites[index].articleUrl
+    }
+  }
+  const handleFavoriteToggle = async (id: number) => {
+    const update = [...articles]
+    if (update[id].favoriteId) {
+      removeFavorite({variables:{favoriteId:update[id].favoriteId}})
+      update[id].favoriteId = undefined
+    }
+    else {
+      console.log('adding favorite', update[id])
+      const response = await addFavorite({variables:{
+        title:update[id].title,
+        content:update[id].content,
+        imageUrl:update[id].image_url,
+        articleUrl:update[id].article_url,
+        category:update[id].category
+      }})
+      console.log('got respones', response)
+      update[id].favoriteId = getFavoriteId(response.data.addFavorite.favoriteStories, update[id].article_url)
+    }
+    setArticles(update);
+  };
+
+
   if (loading) {
     return (
       <Loader active inline="centered">
@@ -54,13 +103,13 @@ export default function SavedArticles() {
     return <Message negative>{error.message}</Message>;
   }
 
-  const articles = data.me.favoriteStories.map((story: any) => ({
-    favoriteId: story._id,
-    title: story.title,
-    content: story.content,
-    image_url: story.imageUrl,
-    article_url: story.articleUrl,
-  }));
+  // const articles = data.me.favoriteStories.map((story: any) => ({
+  //   favoriteId: story._id,
+  //   title: story.title,
+  //   content: story.content,
+  //   image_url: story.imageUrl,
+  //   article_url: story.articleUrl,
+  // }));
 
   return (
     <Container style={{ marginTop: "25%" }}>
@@ -79,6 +128,7 @@ export default function SavedArticles() {
                 image_url={article.image_url}
                 article_url={article.article_url}
                 favoriteId={article.favoriteId}
+                onFavoriteToggle={handleFavoriteToggle}
               />
               <div style={{ marginTop: "1em" }}>
                 <Button basic color="blue" onClick={() => handleShare(article)}>
