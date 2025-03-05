@@ -10,8 +10,8 @@ interface NewsCardProps {
   image_url: string;
   category?: string;
   article_url: string;
-  isFavorite?: boolean;
-  onFavoriteToggle?: (id: number, newFavoriteState: boolean) => void;
+  favoriteId: string | undefined;
+  onFavoriteToggle?: (id: number) => void;
 }
 
 export default function NewsCard({
@@ -21,12 +21,12 @@ export default function NewsCard({
   image_url,
   category,
   article_url,
-  isFavorite = false,
+  favoriteId,
   onFavoriteToggle,
 }: NewsCardProps) {
   const handleFavoriteClick = () => {
     if (onFavoriteToggle) {
-      onFavoriteToggle(id, !isFavorite);
+      onFavoriteToggle(id);
     }
   };
 
@@ -49,7 +49,7 @@ export default function NewsCard({
             </Card.Content>
             <Card.Content extra>
               <Button icon onClick={handleFavoriteClick}>
-                <Icon name={isFavorite ? "heart" : "heart outline"} color={isFavorite ? "red" : undefined} />
+                <Icon name={favoriteId ? "heart" : "heart outline"} color={favoriteId ? "red" : undefined} />
               </Button>
               <Button as="a" href={article_url} target="_blank" rel="noopener noreferrer">
                 Read More

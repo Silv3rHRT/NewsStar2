@@ -36,6 +36,11 @@ const typeDefs = `
 	  favoriteStories: [FavoriteStory] 
   }
 
+  type SearchResults {
+    stories: [Story]
+    user: User
+  }
+
   type Auth {
   	token: ID!
 	  user: User
@@ -55,7 +60,7 @@ const typeDefs = `
 	  updateUser(username: String!, email: String!, password: String!): User
 	  deleteUser: User
 	  login(emailOrUsername: String!, password: String!): Auth
-	  search(searchTerms: String!, from: Date, to: Date, sortBy: String): [Story]!
+	  search(searchTerms: String!, from: Date, to: Date, sortBy: String): SearchResults
     addFavorite(title: String!, content: String!, imageUrl: String!, category: String!, articleUrl: String!): User
     removeFavorite(favoriteId: ID!): User
   }
