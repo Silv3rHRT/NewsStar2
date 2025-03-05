@@ -39,5 +39,7 @@ export async function fetchSearch({searchTerms, from, to, sortBy}: any, key = AP
 }
 
 export async function fetchNews(): Promise<Array<IStory>> {
-    return fetchSearch({searchTerms: "general"}, API_KEY2 || API_KEY);
+    const url = `https://newsapi.org/v2/top-headlines?language=en&apiKey=${API_KEY2 || API_KEY}`
+    const response = await axios.get(url);
+    return transformStories(response.data.articles)
 }
