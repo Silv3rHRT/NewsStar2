@@ -29,10 +29,11 @@ const router = createBrowserRouter([
       }, {
         path: '/favorites',
         element: <SavedArticles />
-      }, {
-        path: '/history',
-        element: <History />
       }
+      // , {
+      //   path: '/history',
+      //   element: <History />
+      // }
     ]
   }
 ])
