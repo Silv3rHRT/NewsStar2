@@ -22,17 +22,18 @@ export interface SearchResult {
 
 interface SearchProps {
   handleSearchResults:  (results: SearchResult[]) => void;
+ 
 }
 
-
+const defaultFilters = {
+  sortBy: "",
+  from: "",
+  to: "",
+}
 export default function SearchBar({ handleSearchResults }: SearchProps) {
   const [search, { error }] = useMutation(SEARCH)
   const [query, setQuery] = useState("");
-  const [filters, setFilters] = useState({
-    sortBy: "",
-    from: "",
-    to: "",
-  });
+  const [filters, setFilters] = useState(defaultFilters);
   const [showFilters, setShowFilters] = useState(false);
 
   // Get today's date and a date 30 days ago in YYYY-MM-DD format.
@@ -41,7 +42,14 @@ export default function SearchBar({ handleSearchResults }: SearchProps) {
   thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
   const minDate = thirtyDaysAgo.toISOString().split("T")[0];
 
+  const clearFilters = () => {
+    setFilters(defaultFilters)
+  }
+
   const handleInputChange = (_: any, { value }: any) => {
+    if (!value.startsWith(query)) {
+      clearFilters()
+    }
     setQuery(value);
     if (value.trim() === "") {
       // onSearch("", filters);
@@ -59,6 +67,7 @@ export default function SearchBar({ handleSearchResults }: SearchProps) {
 
   const handleSearch = async () => {
     if (!query.trim()) {
+      clearFilters()
       // onSearch("", filters);
       return;
     }
