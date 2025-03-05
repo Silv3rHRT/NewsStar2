@@ -36,14 +36,15 @@ Generate a Secure JWT Secret Key
 ```
 openssl rand -base64 32
 ```
-Then install dependencies and run NewsStar.
+Install dependencies
 ```
-# Install dependencies
-npm install  
+npm install 
+``` 
+Build the project and start the server
+```
+npm run develop 
+``` 
 
-# Build the project and start the server
-npm run develop
-```
 
 ## Usage
 
