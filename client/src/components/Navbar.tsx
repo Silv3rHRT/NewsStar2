@@ -93,9 +93,9 @@ export default function Navbar() {
                     <Link to="/favorites" className="me-2">
                       <Button variant="outline-light">Favorites</Button>
                     </Link>
-                    <Link to="/history" className="me-2">
+                    {/* <Link to="/history" className="me-2">
                       <Button variant="outline-light">History</Button>
-                    </Link>
+                    </Link> */}
                     <Link to="/login">
                       <Button variant="outline-light">Login</Button>
                     </Link>
