@@ -120,7 +120,14 @@ export default function SearchBar({ handleSearchResults }: SearchProps) {
         const response = await fetch(apiUrl);
         if (!response.ok) return;
         const data = await response.json();
-        handleSearchResults(data.articles as SearchResult[], []);
+        const mappedResults = data.articles.map((article: any) => ({
+          articleUrl: article.url,
+          category: article.category || "",
+          content: article.content || "",
+          imageUrl: article.urlToImage || "",
+          title: article.title || "",
+        }));
+        handleSearchResults(mappedResults as SearchResult[], []);
       } catch (apiError) {
         console.error("Error fetching news from external API", apiError);
       }
