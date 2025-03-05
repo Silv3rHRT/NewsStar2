@@ -7,14 +7,15 @@ import Home from './pages/Home.js'
 import Login from './pages/Login.js'
 import Register from './pages/Register.js'
 import SavedArticles from './pages/SavedArticles.js'
-import History from './pages/History.js'
+import Error from './pages/Error.js'
+
 
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
-    errorElement: <h1 className='display-2'>Wrong page!</h1>,
+    errorElement: <Error />,
     children: [
       {
         index: true,
@@ -28,10 +29,11 @@ const router = createBrowserRouter([
       }, {
         path: '/favorites',
         element: <SavedArticles />
-      }, {
-        path: '/history',
-        element: <History />
       }
+      // , {
+      //   path: '/history',
+      //   element: <History />
+      // }
     ]
   }
 ])
