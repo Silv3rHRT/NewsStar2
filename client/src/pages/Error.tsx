@@ -1,5 +1,6 @@
 import { useRouteError } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function ErrorPage() {
   const error = useRouteError() as { statusText?: string; message?: string };
@@ -16,25 +17,21 @@ export default function ErrorPage() {
       });
     };
 
-    // Attempt to play the audio as soon as possible
     playAudio();
-
-    // Fallback to play after a delay
     const timeoutId = setTimeout(playAudio, 500);
-
     return () => clearTimeout(timeoutId);
   }, []);
 
   return (
-    <div id="error-page" style={{ textAlign: 'center', padding: '50px', fontFamily: 'Comic Sans MS, sans-serif' }}>
-      <h1 style={{ fontSize: '3rem', color: 'red' }}>⚠️ WHOOPSIE DAISY! ⚠️</h1>
-      <p style={{ fontSize: '1.5rem' }}>Congratulations! 🎉 You have officially broken the internet. </p>
-      <p style={{ fontSize: '1.2rem' }}> 
+    <div className="container text-center py-5 bg-danger text-white rounded shadow-lg border border-warning border-5 position-relative overflow-hidden">
+      <h1 className="display-3 fw-bold text-uppercase text-warning animate__animated animate__flash animate__infinite">⚠️ WHOOPSIE DAISY! ⚠️</h1>
+      <p className="fs-4 text-light bg-dark p-2 d-inline-block rounded animate__animated animate__pulse animate__infinite">Congratulations! 🎉 You have officially broken the internet.</p>
+      <p className="fs-5 text-warning fw-bold animate__animated animate__shakeX animate__infinite"> 
         (╯°□°）╯︵ ┻━┻ <br />
         We don't know what happened, but it definitely wasn't our fault. Probably. 
       </p>
-      <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'center' }}>
-        <pre style={{ fontSize: '1rem', lineHeight: '1.5', fontFamily: 'monospace', background: '#f8f8f8', padding: '10px', display: 'inline-block', textAlign: 'center' }}>
+      <div className="d-flex justify-content-center mt-4">
+        <pre className="fs-5 bg-light text-dark p-3 rounded border shadow text-center w-50 animate__animated animate__wobble animate__infinite">
           {`
           ／＼_/＼
          ( o.o )
@@ -43,36 +40,43 @@ export default function ErrorPage() {
           `}
         </pre>
       </div>
-      <div style={{ marginTop: '10px', display: 'flex', justifyContent: 'center' }}>
-        <pre style={{ fontSize: '1rem', lineHeight: '1.5', fontFamily: 'monospace', background: '#f8f8f8', padding: '10px', display: 'inline-block', textAlign: 'center' }}>
+      <div className="d-flex justify-content-center mt-3">
+        <pre className="fs-5 bg-light text-dark p-3 rounded border shadow text-center w-50 animate__animated animate__bounce animate__infinite">
           {`
           (╯°□°）╯︵ ʞɔɐH 
           SYSTEM MELTDOWN IMMINENT!
           `}
         </pre>
       </div>
-      <p style={{ fontSize: '1rem', fontStyle: 'italic' }}>
+      <p className="fs-5 fst-italic text-light mt-4 bg-dark p-2 d-inline-block rounded animate__animated animate__heartBeat animate__infinite">
         {error.statusText || error.message || "Mystery Error! Just pretend it's an Easter egg."}
       </p>
       {audioBlocked && (
+        <div className="d-flex justify-content-center">
+          <button 
+            className="btn btn-info btn-lg mt-3 fw-bold shadow-lg mx-2 animate__animated animate__rubberBand animate__infinite"
+            onClick={() => {
+              const audio = new Audio('https://www.myinstants.com/media/sounds/sad-trombone.mp3');
+              audio.play().catch(() => console.warn('Audio play failed.'));
+            }}
+          >
+            Play Sad Trombone Sound 🎺
+          </button>
+        </div>
+      )}
+      <div className="d-flex justify-content-center mt-3">
         <button 
-          style={{ padding: '10px 20px', fontSize: '1.2rem', marginTop: '20px', cursor: 'pointer' }}
+          className="btn btn-warning btn-lg fw-bold shadow-lg mx-2 animate__animated animate__tada animate__infinite"
           onClick={() => {
-            const audio = new Audio('https://www.myinstants.com/media/sounds/sad-trombone.mp3');
-            audio.play().catch(() => console.warn('Audio play failed.'));
+            window.location.href = '/';
           }}
         >
-          Play Sad Trombone Sound 🎺
+          Take me home, country roads 🏡
         </button>
-      )}
-      <button 
-        style={{ padding: '10px 20px', fontSize: '1.2rem', marginTop: '20px', cursor: 'pointer' }}
-        onClick={() => {
-          window.location.href = '/';
-        }}
-      >
-        Take me home, country roads 🏡
-      </button>
+      </div>
+      <div className="position-absolute w-100 h-100 top-0 start-0 d-flex align-items-center justify-content-center text-danger fw-bold fs-1 animate__animated animate__fadeIn animate__infinite" style={{ pointerEvents: 'none', opacity: 0.2 }}>
+        SYSTEM FAILURE DETECTED!!!
+      </div>
     </div>
   );
 }
