@@ -47,17 +47,18 @@ export default function RegisterForm () {
     }
   
     try {
+      const { data } = await signUp({ variables: { ...userFormData } });
   
-      const { data } = await signUp({ variables: {...userFormData} });
+      console.log('Received data:', data); // Add detailed logging
   
-      if (!data) {
+      if (!data.addUser.token) {
         throw new Error("Failed to create account");
       }
   
       console.log('Sign up successful, received data:', data);
   
-      Auth.login(data.signUp.token);
-      navigate('/');
+      Auth.login(data.addUser.token);
+      navigate('/'); // Navigate to home page after successful registration
     } catch (err) {
       console.error('Error during sign up:', err);
       setErrorMessage(true);
