@@ -7,7 +7,7 @@ import { useQuery } from "@apollo/client";
 import { QUERY_ME } from "@/utils/queries";
 
 interface Article {
-  _id: string;
+  favoriteId: string;
   id: number;
   title: string;
   content: string;
@@ -55,7 +55,7 @@ export default function SavedArticles() {
   }
 
   const articles = data.me.favoriteStories.map((story: any) => ({
-    _id: story._id,
+    favoriteId: story._id,
     title: story.title,
     content: story.content,
     image_url: story.imageUrl,
@@ -70,14 +70,15 @@ export default function SavedArticles() {
 
       <Grid columns={3} stackable>
         {articles.length > 0 ? (
-          articles.map((article: Article) => (
-            <Grid.Column key={article._id}>
+          articles.map((article: Article, index: number) => (
+            <Grid.Column key={article.id}>
               <NewsCard
-                id={article.id}
+                id={index}
                 title={article.title}
                 content={article.content}
                 image_url={article.image_url}
                 article_url={article.article_url}
+                favoriteId={article.favoriteId}
               />
               <div style={{ marginTop: "1em" }}>
                 <Button basic color="blue" onClick={() => handleShare(article)}>

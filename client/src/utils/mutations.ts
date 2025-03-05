@@ -25,15 +25,23 @@ export const SIGN_UP = gql`mutation AddUser($username: String!, $email: String!,
 
 export const SEARCH = gql`mutation Mutation($searchTerms: String!, $from: Date, $to: Date, $sortBy: String) {
   search(searchTerms: $searchTerms, from: $from, to: $to, sortBy: $sortBy) {
-    articleUrl
-    category
-    content
-    imageUrl
-    title
+   stories {
+      title
+      articleUrl
+      category
+      imageUrl
+      content
+    }
+    user {
+      favoriteStories {
+        _id
+        articleUrl
+      }
+    }
   }
 }`
 
-export const ADD_FAVORITE= gql`mutation Mutation($title: String!, $content: String!, $imageUrl: String!, $category: String!, $articleUrl: String!) {
+export const ADD_FAVORITE= gql`mutation AddFavorite($title: String!, $content: String!, $imageUrl: String!, $category: String!, $articleUrl: String!) {
   addFavorite(title: $title, content: $content, imageUrl: $imageUrl, category: $category, articleUrl: $articleUrl) {
     _id
     username
@@ -53,5 +61,12 @@ export const ADD_FAVORITE= gql`mutation Mutation($title: String!, $content: Stri
       category
       articleUrl
     }
+  }
+}`
+
+export const REMOVE_FAVORITE = gql`
+mutation RemoveFavorite($favoriteId: ID!) {
+  removeFavorite(favoriteId: $favoriteId) {
+    username
   }
 }`

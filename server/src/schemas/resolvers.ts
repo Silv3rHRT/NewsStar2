@@ -59,6 +59,11 @@ interface Context {
 	user?: User;
 }
 
+interface SearchResults {
+	stories: Array<IStory>;
+	user: User
+}
+
 const resolvers = {
 	Date: dateScalar,
 
@@ -121,7 +126,7 @@ const resolvers = {
 			}
 			return await User.findByIdAndDelete(context.user._id);
 		},
-		search: async (_parent: unknown, args: SearchArgs, context: Context): Promise<Array<IStory>> => {
+		search: async (_parent: unknown, args: SearchArgs, context: Context): Promise<SearchResults> => {
 			if (!context.user) {
 				throw new AuthenticationError('Not authenticated');
 			}
@@ -148,8 +153,9 @@ const resolvers = {
 				user.searchHistory.push(params);
 			}
 			user.save();
+			const results = await fetchSearch(args)
 					
-			return fetchSearch(args);
+			return { stories: results, user };
 		},				
 		addFavorite: async(_parent: unknown, args: AddFavoriteArgs, context: Context): Promise<User> => {
 			if (!context.user) {

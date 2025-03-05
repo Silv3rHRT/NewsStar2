@@ -20,8 +20,13 @@ export interface SearchResult {
   title:string;
 }
 
+export interface FavoriteStory {
+  _id:string;
+  articleUrl:string;
+}
+
 interface SearchProps {
-  handleSearchResults:  (results: SearchResult[]) => void;
+  handleSearchResults:  (results: SearchResult[], favoriteStories: FavoriteStory[]) => void;
  
 }
 
@@ -31,7 +36,7 @@ const defaultFilters = {
   to: "",
 }
 export default function SearchBar({ handleSearchResults }: SearchProps) {
-  const [search, { error }] = useMutation(SEARCH)
+  const [search] = useMutation(SEARCH)
   const [query, setQuery] = useState("");
   const [filters, setFilters] = useState(defaultFilters);
   const [showFilters, setShowFilters] = useState(false);
@@ -91,7 +96,8 @@ export default function SearchBar({ handleSearchResults }: SearchProps) {
       sortBy: filters.sortBy 
     }})
 
-    handleSearchResults(searchResults.data.search as SearchResult[])
+    handleSearchResults(searchResults.data.search.stories as SearchResult[], 
+      searchResults.data.search.user.favoriteStories)
 
     // Construct the API URL with filters.
     // let apiUrl = `https://newsapi.org/v2/everything?q=${query}&language=en&apiKey=5dac7609e1e747c090c2f5f1cf9c6403`;
