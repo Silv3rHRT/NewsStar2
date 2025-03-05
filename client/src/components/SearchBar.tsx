@@ -9,59 +9,63 @@ import {
   DropdownProps,
 } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
-import { SEARCH } from '../utils/mutations.js'
+import { SEARCH } from "../utils/mutations.js";
 import { useMutation } from "@apollo/client";
 
 export interface SearchResult {
-  articleUrl:string;
-  category:string;
-  content:string;
-  imageUrl:string;
-  title:string;
+  articleUrl: string;
+  category: string;
+  content: string;
+  imageUrl: string;
+  title: string;
 }
 
 export interface FavoriteStory {
-  _id:string;
-  articleUrl:string;
+  _id: string;
+  articleUrl: string;
 }
 
 interface SearchProps {
-  handleSearchResults:  (results: SearchResult[], favoriteStories: FavoriteStory[]) => void;
- 
+  handleSearchResults: (
+    results: SearchResult[],
+    favoriteStories: FavoriteStory[]
+  ) => void;
 }
 
 const defaultFilters = {
   sortBy: "",
   from: "",
   to: "",
-}
+};
+
 export default function SearchBar({ handleSearchResults }: SearchProps) {
-  const [search] = useMutation(SEARCH)
+  const [search] = useMutation(SEARCH);
   const [query, setQuery] = useState("");
   const [filters, setFilters] = useState(defaultFilters);
   const [showFilters, setShowFilters] = useState(false);
 
-  // Get today's date and a date 30 days ago in YYYY-MM-DD format.
   const today = new Date().toISOString().split("T")[0];
   const thirtyDaysAgo = new Date();
   thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
   const minDate = thirtyDaysAgo.toISOString().split("T")[0];
 
   const clearFilters = () => {
-    setFilters(defaultFilters)
-  }
+    setFilters(defaultFilters);
+  };
 
   const handleInputChange = (_: any, { value }: any) => {
     if (!value.startsWith(query)) {
-      clearFilters()
+      clearFilters();
     }
     setQuery(value);
     if (value.trim() === "") {
-      // onSearch("", filters);
     }
   };
 
-  const handleFilterChange = (_: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => {
+  const handleFilterChange = (
+    _: React.SyntheticEvent<HTMLElement>,
+    data: DropdownProps
+  ) => {
     if (data.name && data.value) {
       setFilters((prevFilters) => ({
         ...prevFilters,
@@ -72,48 +76,55 @@ export default function SearchBar({ handleSearchResults }: SearchProps) {
 
   const handleSearch = async () => {
     if (!query.trim()) {
-      clearFilters()
-      // onSearch("", filters);
+      clearFilters();
       return;
     }
-    // Save to Local Storage
+
     let searches = JSON.parse(localStorage.getItem("searchHistory") || "[]");
-    searches.unshift({ query, timestamp: new Date().toISOString() }); // Add new search to the top
+    searches.unshift({ query, timestamp: new Date().toISOString() });
     localStorage.setItem("searchHistory", JSON.stringify(searches));
 
-// // Send to API (Backend should save it in DB)
-// fetch("/api/history", {
-//   method: "POST",
-//   headers: { "Content-Type": "application/json" },
-//   body: JSON.stringify({ query }),
-// }).catch(error => console.error("Error saving search:", error));
+    try {
+      const searchResults = await search({
+        variables: {
+          searchTerms: query,
+          from: filters.from,
+          to: filters.to,
+          sortBy: filters.sortBy,
+        },
+      });
 
-    // Trigger the search function
-    const searchResults = await search({variables: {
-      searchTerms: query,
-      from: filters.from,
-      to:filters.to,
-      sortBy: filters.sortBy 
-    }})
+      if (searchResults.data.search.user) {
+        handleSearchResults(
+          searchResults.data.search.stories as SearchResult[],
+          searchResults.data.search.user.favoriteStories
+        );
+      } else {
+        handleSearchResults(
+          searchResults.data.search.stories as SearchResult[],
+          []
+        );
+      }
+    } catch (error) {
+      console.error(
+        "Error with GraphQL search, falling back to external API:",
+        error
+      );
 
-    handleSearchResults(searchResults.data.search.stories as SearchResult[], 
-      searchResults.data.search.user.favoriteStories)
+      let apiUrl = `https://newsapi.org/v2/everything?q=${query}&language=en&apiKey=5dac7609e1e747c090c2f5f1cf9c6403`;
+      if (filters.sortBy) apiUrl += `&sortBy=${filters.sortBy}`;
+      if (filters.from) apiUrl += `&from=${filters.from}`;
+      if (filters.to) apiUrl += `&to=${filters.to}`;
 
-    // Construct the API URL with filters.
-    // let apiUrl = `https://newsapi.org/v2/everything?q=${query}&language=en&apiKey=5dac7609e1e747c090c2f5f1cf9c6403`;
-    // if (filters.sortBy) apiUrl += `&sortBy=${filters.sortBy}`;
-    // if (filters.from) apiUrl += `&from=${filters.from}`;
-    // if (filters.to) apiUrl += `&to=${filters.to}`;
-
-    // try 
-    //   const response = await fetch(apiUrl);
-    //   if (!response.ok) return;
-    //   const data = await response.json();
-    //   onSearch(query, filters);
-    //   // Optionally, you can pass data upward if needed.
-    // } catch (error) {
-    //   console.error("Error fetching news from API", error);
-    // }
+      try {
+        const response = await fetch(apiUrl);
+        if (!response.ok) return;
+        const data = await response.json();
+        handleSearchResults(data.articles as SearchResult[], []);
+      } catch (apiError) {
+        console.error("Error fetching news from external API", apiError);
+      }
+    }
   };
 
   return (
