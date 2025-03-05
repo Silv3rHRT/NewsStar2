@@ -22,3 +22,14 @@ export const QUERY_ME = gql`query Me {
     }
   }
 }`
+
+export const NEWS = gql`
+query News {
+  news {
+    title
+    content
+    imageUrl
+    category
+    articleUrl
+  }
+}`

@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { NEWS } from "@/utils/queries";
+import { useQuery } from "@apollo/client";
 
 
 export default function Navbar() {
@@ -32,21 +34,26 @@ export default function Navbar() {
     return () => clearInterval(interval);
   }, []);
 
-  useEffect(() => {
-    const fetchHeadlines = async () => {
-      try {
-        const response = await fetch(
-          "https://newsapi.org/v2/top-headlines?language=en&apiKey=5dac7609e1e747c090c2f5f1cf9c6403"
-        );
-        if (!response.ok) throw new Error("Failed to fetch headlines");
-        const data = await response.json();
-        setHeadlines([...data.articles.map((article: any) => article.title)]);
-      } catch (error) {
-        console.error("Error fetching headlines:", error);
-      }
-    };
-    fetchHeadlines();
-  }, []);
+  const {loading, data} = useQuery(NEWS, {})
+
+  if (!loading && headlines.length == 0) {
+    setHeadlines(data.news.map((article: any) => article.title))
+  }
+  // useEffect(() => {
+  //   const fetchHeadlines = async () => {
+  //     try {
+  //       const response = await fetch(
+  //         "https://newsapi.org/v2/top-headlines?language=en&apiKey=5dac7609e1e747c090c2f5f1cf9c6403"
+  //       );
+  //       if (!response.ok) throw new Error("Failed to fetch headlines");
+  //       const data = await response.json();
+  //       setHeadlines([...data.articles.map((article: any) => article.title)]);
+  //     } catch (error) {
+  //       console.error("Error fetching headlines:", error);
+  //     }
+  //   };
+  //   fetchHeadlines();
+  // }, []);
 
   return (
     <>
